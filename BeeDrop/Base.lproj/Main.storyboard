@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="14A361c" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7yL-pc-Ghh">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
@@ -24,6 +24,32 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="306" y="13"/>
+        </scene>
+        <!--Status View Controller-->
+        <scene sceneID="FCO-DF-mVf">
+            <objects>
+                <viewController id="7yL-pc-Ghh" customClass="StatusViewController" customModule="BeeDrop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="P4k-if-8en"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZOs-dF-iZf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="s2P-9g-UZs">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="waiting.png" translatesAutoresizingMaskIntoConstraints="NO" id="PD4-Fk-v0b">
+                                <rect key="frame" x="8" y="15" width="76" height="80"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="statusIcon" destination="PD4-Fk-v0b" id="45G-uo-lng"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CZZ-NG-5aQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1059" y="-759"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Kf8-pR-yCb">
@@ -61,4 +87,7 @@
             <point key="canvasLocation" x="1747" y="13"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="waiting.png" width="512" height="512"/>
+    </resources>
 </document>
