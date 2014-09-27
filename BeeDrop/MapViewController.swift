@@ -29,11 +29,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         mapView!.setRegion(region, animated: true)
         view.addSubview(mapView!)
     }
-    
-    func invokeStatusView() {
-        
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,7 +41,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
     
 
     /*

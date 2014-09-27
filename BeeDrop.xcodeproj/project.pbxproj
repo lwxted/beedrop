@@ -29,11 +29,7 @@
 		5A4E364619D5D19200DB9439 /* Particles in Resources */ = {isa = PBXBuildFile; fileRef = 5A4E363C19D5D19200DB9439 /* Particles */; };
 		5A4E364D19D5DF1B00DB9439 /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4E364A19D5DF1B00DB9439 /* FBShimmeringLayer.m */; };
 		5A4E364E19D5DF1B00DB9439 /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4E364C19D5DF1B00DB9439 /* FBShimmeringView.m */; };
-		977C557119D6277F005A232C /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 977C557019D6277F005A232C /* FacebookSDK.framework */; };
-		977C557319D63B26005A232C /* StatusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 977C557219D63B26005A232C /* StatusViewController.swift */; };
-		977C557619D64EB6005A232C /* waiting.png in Resources */ = {isa = PBXBuildFile; fileRef = 977C557419D64EB6005A232C /* waiting.png */; };
-		977C557719D64EB6005A232C /* waitingIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 977C557519D64EB6005A232C /* waitingIcon.png */; };
-		977C557919D6571E005A232C /* bee.png in Resources */ = {isa = PBXBuildFile; fileRef = 977C557819D6571E005A232C /* bee.png */; };
+		5A4E365019D5EC4A00DB9439 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A4E364F19D5EC4A00DB9439 /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -77,11 +73,7 @@
 		5A4E364A19D5DF1B00DB9439 /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
 		5A4E364B19D5DF1B00DB9439 /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
 		5A4E364C19D5DF1B00DB9439 /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
-		977C557019D6277F005A232C /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
-		977C557219D63B26005A232C /* StatusViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusViewController.swift; sourceTree = "<group>"; };
-		977C557419D64EB6005A232C /* waiting.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waiting.png; sourceTree = "<group>"; };
-		977C557519D64EB6005A232C /* waitingIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = waitingIcon.png; sourceTree = "<group>"; };
-		977C557819D6571E005A232C /* bee.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bee.png; sourceTree = "<group>"; };
+		5A4E364F19D5EC4A00DB9439 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				977C557119D6277F005A232C /* FacebookSDK.framework in Frameworks */,
+				5A4E365019D5EC4A00DB9439 /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -130,7 +122,6 @@
 				5A4E360919D5B45500DB9439 /* ViewController.swift */,
 				5A3CBCA919D60BF800320650 /* MapViewController.swift */,
 				5A4E360B19D5B45500DB9439 /* Main.storyboard */,
-				977C557219D63B26005A232C /* StatusViewController.swift */,
 				5A4E360E19D5B45500DB9439 /* Images.xcassets */,
 				5A4E361019D5B45500DB9439 /* LaunchScreen.xib */,
 				5A4E360519D5B45400DB9439 /* Supporting Files */,
@@ -166,9 +157,6 @@
 		5A4E362719D5C99F00DB9439 /* Static */ = {
 			isa = PBXGroup;
 			children = (
-				977C557819D6571E005A232C /* bee.png */,
-				977C557419D64EB6005A232C /* waiting.png */,
-				977C557519D64EB6005A232C /* waitingIcon.png */,
 				5A4E362D19D5CF1900DB9439 /* 1.jpg */,
 				5A4E362F19D5CF5700DB9439 /* 2.jpg */,
 			);
@@ -178,7 +166,7 @@
 		5A4E362A19D5CC8000DB9439 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				977C557019D6277F005A232C /* FacebookSDK.framework */,
+				5A4E364F19D5EC4A00DB9439 /* FacebookSDK.framework */,
 				5A4E362B19D5CC8900DB9439 /* BlurView.swift */,
 				5A4E363319D5D19200DB9439 /* LTEasing.swift */,
 				5A4E363419D5D19200DB9439 /* LTMorphingLabel.swift */,
@@ -283,11 +271,8 @@
 				5A4E364619D5D19200DB9439 /* Particles in Resources */,
 				5A4E360D19D5B45500DB9439 /* Main.storyboard in Resources */,
 				5A4E361219D5B45500DB9439 /* LaunchScreen.xib in Resources */,
-				977C557919D6571E005A232C /* bee.png in Resources */,
 				5A4E363019D5CF5700DB9439 /* 2.jpg in Resources */,
 				5A4E362E19D5CF1900DB9439 /* 1.jpg in Resources */,
-				977C557619D64EB6005A232C /* waiting.png in Resources */,
-				977C557719D64EB6005A232C /* waitingIcon.png in Resources */,
 				5A4E360F19D5B45500DB9439 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -314,7 +299,6 @@
 				5A4E364519D5D19200DB9439 /* NSString+LTMorphingLabel.swift in Sources */,
 				5A4E364019D5D19200DB9439 /* LTMorphingLabel+Burn.swift in Sources */,
 				5A4E360819D5B45500DB9439 /* AppDelegate.swift in Sources */,
-				977C557319D63B26005A232C /* StatusViewController.swift in Sources */,
 				5A4E363E19D5D19200DB9439 /* LTMorphingLabel.swift in Sources */,
 				5A4E362C19D5CC8900DB9439 /* BlurView.swift in Sources */,
 				5A4E364D19D5DF1B00DB9439 /* FBShimmeringLayer.m in Sources */,
@@ -445,13 +429,11 @@
 		5A4E362219D5B45500DB9439 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ADDITIONAL_SDKS = "~/Documents/FacebookSDK/FacebookSDK.framework";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/lwxted/Documents/FacebookSDK,
-					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = BeeDrop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -464,13 +446,11 @@
 		5A4E362319D5B45500DB9439 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ADDITIONAL_SDKS = "~/Documents/FacebookSDK/FacebookSDK.framework";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/lwxted/Documents/FacebookSDK,
-					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = BeeDrop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
