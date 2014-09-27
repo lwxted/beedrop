@@ -30,6 +30,7 @@
 		5A4E364D19D5DF1B00DB9439 /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4E364A19D5DF1B00DB9439 /* FBShimmeringLayer.m */; };
 		5A4E364E19D5DF1B00DB9439 /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4E364C19D5DF1B00DB9439 /* FBShimmeringView.m */; };
 		5A4E365019D5EC4A00DB9439 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A4E364F19D5EC4A00DB9439 /* FacebookSDK.framework */; };
+		5A5448D919D6632E0070F516 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5448D819D6632E0070F516 /* SearchViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,7 @@
 		5A4E364B19D5DF1B00DB9439 /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
 		5A4E364C19D5DF1B00DB9439 /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
 		5A4E364F19D5EC4A00DB9439 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
+		5A5448D819D6632E0070F516 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +123,7 @@
 				5A4E360719D5B45500DB9439 /* AppDelegate.swift */,
 				5A4E360919D5B45500DB9439 /* ViewController.swift */,
 				5A3CBCA919D60BF800320650 /* MapViewController.swift */,
+				5A5448D819D6632E0070F516 /* SearchViewController.swift */,
 				5A4E360B19D5B45500DB9439 /* Main.storyboard */,
 				5A4E360E19D5B45500DB9439 /* Images.xcassets */,
 				5A4E361019D5B45500DB9439 /* LaunchScreen.xib */,
@@ -182,8 +185,8 @@
 				5A4E364A19D5DF1B00DB9439 /* FBShimmeringLayer.m */,
 				5A4E364B19D5DF1B00DB9439 /* FBShimmeringView.h */,
 				5A4E364C19D5DF1B00DB9439 /* FBShimmeringView.m */,
-				5A4E363C19D5D19200DB9439 /* Particles */,
 				5A4E364719D5DF1B00DB9439 /* BeeDrop-Bridging-Header.h */,
+				5A4E363C19D5D19200DB9439 /* Particles */,
 			);
 			name = Helper;
 			sourceTree = "<group>";
@@ -294,6 +297,7 @@
 				5A4E364119D5D19200DB9439 /* LTMorphingLabel+Evaporate.swift in Sources */,
 				5A4E364419D5D19200DB9439 /* LTMorphingLabel+Sparkle.swift in Sources */,
 				5A4E363D19D5D19200DB9439 /* LTEasing.swift in Sources */,
+				5A5448D919D6632E0070F516 /* SearchViewController.swift in Sources */,
 				5A4E364E19D5DF1B00DB9439 /* FBShimmeringView.m in Sources */,
 				5A4E360A19D5B45500DB9439 /* ViewController.swift in Sources */,
 				5A4E364519D5D19200DB9439 /* NSString+LTMorphingLabel.swift in Sources */,

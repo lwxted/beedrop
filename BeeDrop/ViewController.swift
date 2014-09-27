@@ -186,7 +186,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
         dispatch_after(popTime, dispatch_get_main_queue(), {
             self.performSegueWithIdentifier("facebookLoggedIn", sender: self)
         });
-        
     }
 }
 
