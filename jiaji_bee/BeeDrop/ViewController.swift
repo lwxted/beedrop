@@ -152,10 +152,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
         });
         // Do any additional setup after loading the view, typically from a nib.
         
-        var statusView = StatusView()
-        self.view.addSubview(statusView.mview)
-        statusView.Appear()
-        
     }
     
     func choiceSwiped() {

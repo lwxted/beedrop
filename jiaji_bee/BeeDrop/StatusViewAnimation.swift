@@ -21,13 +21,16 @@ class StatusView {
     var mimgView: UIImageView?
     var mlabel: UILabel?
     
+    let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
+    let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
+    
     init() {
-        self.mstatus = StatusType.Pending
-        let mframe = CGRect(x: 50, y: 0, width: 50, height: 50)
+        //self.mstatus = StatusType.Pending
+        let mframeWidth = SCREEN_WIDTH
+        let mframeHeight = SCREEN_HEIGHT * 0.25
+        let mframe = CGRect(x: 0, y: 0, width: mframeWidth, height: mframeHeight)
         self.mview = UIView(frame: mframe)
-        setIconAndLabelAttribute()
-        setIconView()
-        setLabelView()
+        setStatus(StatusType.Pending)
     }
     
     func setIconAndLabelAttribute() {
@@ -50,7 +53,7 @@ class StatusView {
     
     func setIconView() {
         // Set up icon image view frame. 
-        let imgIconFrame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        let imgIconFrame = CGRect(x: 0, y: 0, width: 75, height: 75)
         self.mimgView = UIImageView(frame: imgIconFrame)
         self.mimgView?.image = self.mimg?
         self.mview.addSubview(self.mimgView!)
@@ -58,16 +61,25 @@ class StatusView {
     
     func setLabelView() {
         // Set up label view frame.
-        let labelFrame = CGRectMake(0, 0, 200, 21)
+        let labelFrame = CGRectMake(150, 75, 200, 21)
         mlabel = UILabel(frame: labelFrame)
-        mlabel?.center = CGPointMake(160, 50)
+        mlabel?.center = CGPointMake(200, 80)
         mlabel?.textAlignment = NSTextAlignment.Center
         mlabel?.text = mstrStatus
+        mlabel?.font = UIFont(name: "HelveticaNeue", size: CGFloat(15))
         self.mview.addSubview(self.mlabel!)
     }
     
     func setStatus(status: StatusType) {
         mstatus = status
+        let mframeWidth = SCREEN_WIDTH
+        let mframeHeight = SCREEN_HEIGHT * 0.25
+        let mframe = CGRect(x: 0, y: 0, width: mframeWidth, height: mframeHeight)
+        self.mview = UIView(frame: mframe)
+        setIconAndLabelAttribute()
+        setIconView()
+        setLabelView()
+        
     }
     
     func appear() {
