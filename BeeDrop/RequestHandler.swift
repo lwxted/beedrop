@@ -9,7 +9,7 @@
 import Foundation
 
 //let HOST_URL = "128.237.187.154:5000"
-let HOST_URL = "calm-sands-2322.herokuapp.com  "
+let HOST_URL = "calm-sands-2322.herokuapp.com"
 
 class RequestHandler : NSObject, NSURLConnectionDataDelegate {
     
@@ -55,17 +55,20 @@ class RequestHandler : NSObject, NSURLConnectionDataDelegate {
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         // send the request
-        var retData: NSData = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)!
+        var retDataNil: NSData? = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
         
-        // look at the response
-        if let httpResponse = response as? NSHTTPURLResponse {
-            println("HTTP response: \(httpResponse.statusCode)")
-            var retString: String = NSString(data:retData, encoding:NSUTF8StringEncoding)
-            println(retString)
-            return JSONParseArray(retString) as? [String: AnyObject]
-        } else {
-            println("No HTTP response")
-            return nil
+        if let retData = retDataNil {
+            // look at the response
+            if let httpResponse = response as? NSHTTPURLResponse {
+//                println("HTTP response: \(httpResponse.statusCode)")
+                var retString: String = NSString(data:retData, encoding:NSUTF8StringEncoding)
+//                println(retString)
+                return JSONParseArray(retString) as? [String: AnyObject]
+            } else {
+                println("No HTTP response")
+                return nil
+            }
         }
+        return nil
     }
 }

@@ -10,15 +10,15 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate, UITextFieldDelegate, UIGestureRecognizerDelegate, UITableViewDataSource, UITableViewDelegate {
     
     let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width
     let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
+    let appFrame = UIScreen.mainScreen().applicationFrame
     
+    /** Map / Location related variables **/
     var locationManager : CLLocationManager?
-    
     var currentLocation : CLLocationCoordinate2D?
-    
     var mapView : MKMapView?
     var searchbarView : UIView?
     var searchDetailViewController : UIViewController?
@@ -29,46 +29,53 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     var span : MKCoordinateSpan?
     var loc : CLLocationCoordinate2D?
     var region : MKCoordinateRegion?
-    
     var overlay : MKOverlay?
-    
     var directionsRequest : MKDirectionsRequest?
     var route : MKRoute?
-    
     var placemarks = [MKPlacemark]()
-    
     var fromLocation : MKMapItem?
     var toLocation : MKMapItem?
-    
     var fromLocationString : String?
     var toLocationString : String?
+    /** **/
     
     var label : UILabel?
-    
     var toolbar : UIToolbar?
     
-    var infoSheet : UIView?
-    
+    /** infoSheet related variables **/
     var checkButton : UIButton?
-    
+    var infoSheet : UIView?
     var userName : UITextField?
     var itemRequest : UITextField?
     var payment : UITextField?
     var passCode : UITextField?
     var deliverBy : UITextField?
-    
     var nameLabel : UILabel?
     var itemRequestLabel : UILabel?
     var passCodeLabel : UILabel?
     var paymentLabel : UILabel?
     var deliverByLabel : UILabel?
-    
     var infoSheetLabel : UILabel?
-    
     var tapGestureRecognizer : UITapGestureRecognizer?
-    
     let notCenter = NSNotificationCenter.defaultCenter()
-
+    /** **/
+    
+    
+    /** driveList related variables **/
+    var driverListView : UITableView?
+    let cellHeight : CGFloat = 44.0
+    var driverList : [(name: String, rating: Int, ID: Int)] = [("Only a test", 3, 55)]
+    let driverListTableViewCellIdentifier = "driverListTableViewCell"
+    var driverListFetchTerminate = false
+    /** **/
+    
+    var statusView : StatusView?
+    
+    // Hongyi adding handler
+    var handeler = RequestHandler()
+    
+    // MARK: View setups
+    
     func setupMapView() {
         
         span = MKCoordinateSpanMake(latDelta, longDelta)
@@ -103,7 +110,108 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         view.addSubview(searchbarView!)
     }
     
+    func setupCoreLocation() {
+        locationManager = CLLocationManager()
+        locationManager!.delegate = self
+        locationManager!.distanceFilter = kCLDistanceFilterNone
+        locationManager!.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager!.requestWhenInUseAuthorization()
+        locationManager!.startMonitoringSignificantLocationChanges()
+        locationManager!.startUpdatingLocation()
+    }
+    
+    func setupToolbar() {
+        toolbar = UIToolbar(frame: CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 44))
+        toolbar?.tintColor = UIColor(red: 3.0/255.0, green: 161.0/255.0, blue: 64.0/255.0, alpha: 1)
+        toolbar?.items = [
+            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(title: "BeeDrop!", style: .Plain, target: self, action: Selector("tappedBeeDrop")),
+            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
+            ]
+    }
+    
+    func setupNotificationCenter() {
+        notCenter.addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        notCenter.addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func removeNotificationCenter() {
+        notCenter.removeObserver(self)
+    }
+    
+    func setupDriverListView() {
+        driverListView = UITableView(frame: CGRectMake(-2, SCREEN_HEIGHT, SCREEN_WIDTH + 4, 0))
+        
+        driverListView?.contentInset = UIEdgeInsetsMake(5, 0, 2, 0)
+        driverListView?.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 0.95)
+        driverListView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: driverListTableViewCellIdentifier)
+        driverListView?.layer.borderColor = UIColor(red: 3.0/255.0, green: 161.0/255.0, blue: 64.0/255.0, alpha: 1).CGColor
+        driverListView?.layer.borderWidth = 2.0
+        driverListView?.delegate = self
+        driverListView?.dataSource = self
+    }
+    
+    func setupStatusView() {
+        statusView = StatusView(status: .Delivering)
+        statusView?.delegate = self
+        UIApplication.sharedApplication().keyWindow.addSubview(statusView!)
+        
+//        var delayInSeconds = 1.0
+//        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//        dispatch_after(popTime, dispatch_get_main_queue(), {
+//            self.statusView!.appear()
+//        })
+//
+//        delayInSeconds = 3.0
+//        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//        dispatch_after(popTime, dispatch_get_main_queue(), {
+//            self.statusView!.status = .Done
+//            self.statusView!.updateStatus()
+//        })
+//        
+//        delayInSeconds = 5.0
+//        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//        dispatch_after(popTime, dispatch_get_main_queue(), {
+//            self.statusView!.status = .Pending
+//            self.statusView!.updateStatus()
+//        })
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setupCoreLocation()
+        setupMapView()
+        setupSearchbarView()
+        setupToolbar()
+        setupStatusView()
+        setupDriverListView()
+        // Do any additional setup after loading the view.
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: Keyboard event handlers
+    
+    func keyboardWillShow(notification: NSNotification) {
+        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            self.infoSheet!.transform = CGAffineTransformMakeTranslation(0, -320 - 245)
+        }, completion: nil)
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            self.infoSheet!.transform = CGAffineTransformMakeTranslation(0, -320)
+        }, completion: nil)
+    }
+    
+    // MARK: Returned from search view
+    
     func userEnteredFromToLocation() {
+        view.addSubview(toolbar!)
         directionsRequest = MKDirectionsRequest()
         
         if let fl = fromLocation {
@@ -120,7 +228,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         }
         label?.text = "Pickup: \(fromLocationString!)"
         label?.font = UIFont.systemFontOfSize(12)
-
+        
         UIView.animateWithDuration(0.5, animations: {
             self.searchbarView!.alpha = 0.85
         })
@@ -155,69 +263,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         UIView.animateWithDuration(0.5, delay: 0.5, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             self.toolbar!.transform = CGAffineTransformMakeTranslation(0, -44)
-        }, completion: nil)
-    }
-    
-    func setupCoreLocation() {
-        locationManager = CLLocationManager()
-        locationManager!.delegate = self
-        locationManager!.distanceFilter = kCLDistanceFilterNone
-        locationManager!.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager!.requestWhenInUseAuthorization()
-        locationManager!.startMonitoringSignificantLocationChanges()
-        locationManager!.startUpdatingLocation()
-    }
-    
-    
-    func setupToolbar() {
-        toolbar = UIToolbar(frame: CGRectMake(0, SCREEN_HEIGHT, SCREEN_WIDTH, 44))
-        toolbar?.tintColor = UIColor(red: 3.0/255.0, green: 161.0/255.0, blue: 64.0/255.0, alpha: 1)
-        toolbar?.items = [
-            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil),
-            UIBarButtonItem(title: "BeeDrop!", style: .Plain, target: self, action: Selector("tappedBeeDrop")),
-            UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: nil, action: nil)
-            ]
-        view.addSubview(toolbar!)
-    }
-    
-    func setupNotificationCenter() {
-        notCenter.addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
-        notCenter.addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-    }
-    
-    func removeNotificationCenter() {
-        notCenter.removeObserver(self)
-    }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setupCoreLocation()
-        setupMapView()
-        setupSearchbarView()
-        setupToolbar()
-        // Do any additional setup after loading the view.
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func tappedSbar() {
-        performSegueWithIdentifier("tappedSearchBar", sender: self)
-    }
-    
-    func keyboardWillShow(notification: NSNotification) {
-        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-            self.infoSheet!.transform = CGAffineTransformMakeTranslation(0, -320 - 245)
-        }, completion: nil)
-    }
-    
-    func keyboardWillHide(notification: NSNotification) {
-        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
-            self.infoSheet!.transform = CGAffineTransformMakeTranslation(0, -320)
-        }, completion: nil)
+            }, completion: nil)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -261,6 +307,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         payment?.resignFirstResponder()
         passCode?.resignFirstResponder()
         deliverBy?.resignFirstResponder()
+    }
+    
+    func tappedSbar() {
+        performSegueWithIdentifier("tappedSearchBar", sender: self)
     }
     
     func tappedBeeDrop() {
@@ -389,13 +439,112 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         currentLocation = newLocation.coordinate
     }
     
+    func reloadDriverListView() {
+//        driverListView!.frame = CGRectMake(
+//            driverListView!.frame.origin.x,
+//            driverListView!.frame.origin.y,
+//            driverListView!.frame.size.width,
+//            (CGFloat(driverList.count)) * cellHeight + 10)
+        driverListView!.reloadData()
+    }
+    
     func tappedCheckButton() {
+        driverListFetchTerminate = true
+        
         resignResponder()
         view.removeGestureRecognizer(tapGestureRecognizer!)
         removeNotificationCenter()
+        view.addSubview(driverListView!)
+        reloadDriverListView()
         UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             self.infoSheet!.transform = CGAffineTransformMakeTranslation(0, 0)
         }, completion: nil)
+        
+        UIView.animateWithDuration(0.5, delay: 0.5, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+            self.driverListView!.transform = CGAffineTransformMakeTranslation(0, -self.driverListView!.frame.size.height + 2)
+        }, completion: nil)
+//        
+//        var delayInSeconds = 1.0
+//        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//        dispatch_after(popTime, dispatch_get_main_queue(), {
+//            self.driverList += [("Fuck", 2)]
+//            self.reloadDriverListView()
+
+        
+        var submitForm: [String: AnyObject] = [String: AnyObject]()
+        
+        submitForm["ID"] = 21
+        submitForm["fromLoc"] = [0.3, 0.0]
+        submitForm["toLoc"] = [0.3, 0.0]
+        submitForm["requestProduct"] = itemRequest?.text
+        submitForm["payment"] = payment?.text
+        submitForm["passcode"] = passCode?.text
+        
+        handeler.sendRequestByURL(submitForm, tag: "submitUserDeliveryForm")
+        
+        dispatch_async(dispatch_queue_create("driverListQueue", nil), {
+            let listDriverJson: [String: AnyObject] = ["ID": 21]
+            
+            while self.driverListFetchTerminate {
+                usleep(1000000)
+//                print("2")
+                var retDriverListNil: [String: AnyObject]? = self.handeler.sendRequestByURL(listDriverJson, tag: "listNearbyDrivers")
+
+                if let retDriverList = retDriverListNil {
+                    var newDriverList : [(name: String, rating: Int, ID: Int)] = []
+                    // Add the drivers to the list
+                    for (id: String, data: AnyObject) in retDriverList {
+                        var dataDict: [String: AnyObject] = data as [String: AnyObject]
+                        var retName: String = dataDict["name"] as AnyObject? as String
+                        var retRating: Int = dataDict["rating"] as AnyObject? as Int
+                        var intId: Int = id.toInt()!
+                        newDriverList += [(name: retName, rating: retRating, ID: intId)]
+                    }
+                    
+                    // Check if the new upated list is the same as the current saved list
+                    var bSameList = true
+                    if (newDriverList.count == self.driverList.count) {
+                        for i in 0..<self.driverList.count {
+                            if (self.driverList[i].ID != newDriverList[i].ID) {
+                                bSameList = false
+                                break
+                            }
+                        }
+                    }
+                    else {
+                        bSameList = false
+                    }
+                    if !bSameList {
+                        println("Updated the driverlist")
+                        self.driverList = newDriverList
+                        self.reloadDriverListView()
+                    }
+                }
+            }
+        })
     }
     
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return driverList.count
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return cellHeight
+    }
+
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(driverListTableViewCellIdentifier, forIndexPath: indexPath) as UITableViewCell
+        
+        cell.backgroundColor = UIColor.clearColor()
+        var (text, rating, ID) = driverList[indexPath.row]
+        cell.textLabel?.text = text
+        
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println("Driver id \(driverList[indexPath.row].ID)")
+        
+    }
 }

@@ -27,6 +27,9 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
 
     var fbLoginView : FBLoginView?
     
+    //Hongyi adding handler
+    var handeler = RequestHandler()
+    
     func setupBackgroundImageView() {
         
         backgroundImageView = UIImageView(frame: CGRectMake(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -138,6 +141,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         self.setupBackgroundImageView()
         var delayInSeconds = 0.5
         var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
@@ -186,6 +190,10 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
         dispatch_after(popTime, dispatch_get_main_queue(), {
             self.performSegueWithIdentifier("facebookLoggedIn", sender: self)
         });
+        
+        let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Bob", "curLoc": [0.3, 0.0] ]
+        
+        handeler.sendRequestByURL(jsonObject, tag: "addPerson")
     }
 }
 

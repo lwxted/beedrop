@@ -17,9 +17,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        // Jiaji test driver-side alert window
+      //  dispatch_async(dispatch_queue_create("poll", nil), {
+            var alertWindow = AlertWindow()
+            var info = alertWindow.driverAcceptDataHelper()
+            alertWindow.showDriverAccept(info)
+      //  })
+       /*
         //Hongyi tryout here
-        let HOST_URL = "128.237.187.154:5000"
-        
+                
         let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Bob", "curLoc": [0.3, 0.0] ]
         let driverObject: [String: AnyObject] = ["bUser": false, "ID": 52, "name": "Kim kardashian", "curLoc": [0.3, 0.0] ]
         let driverObject1: [String: AnyObject] = ["bUser": false, "ID": 53, "name": "Lamar Odom", "curLoc": [0.30001, 0.0] ]
@@ -36,32 +42,32 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         var returnedJson :[String: AnyObject] = ["status": -1]
         
         //User
-        handeler.sendRequestByURL(jsonObject, tag: "addPerson")
+//        handeler.sendRequestByURL(jsonObject, tag: "addPerson")
         handeler.sendRequestByURL(driverObject, tag: "addPerson")
-        handeler.sendRequestByURL(jsonObject1, tag: "submitUserDeliveryForm")
-        handeler.sendRequestByURL(jsonObject2, tag: "listNearbyDrivers")
-        handeler.sendRequestByURL(jsonObject3, tag: "selectDriver")
-        
-        while ( (returnedJson["status"] as AnyObject? as? Int) == -1) {
-            returnedJson = handeler.sendRequestByURL(jsonObject5, tag: "pollDriverAck")!
-            sleep(2)
-        }
+//        handeler.sendRequestByURL(jsonObject1, tag: "submitUserDeliveryForm")
+//        handeler.sendRequestByURL(jsonObject2, tag: "listNearbyDrivers")
+//        handeler.sendRequestByURL(jsonObject3, tag: "selectDriver")
+//        
+//        while ( (returnedJson["status"] as AnyObject? as? Int) == -1) {
+//            returnedJson = handeler.sendRequestByURL(jsonObject5, tag: "pollDriverAck")!
+//            sleep(2)
+//        }
         
         //Driver
         handeler.sendRequestByURL(driverObject1, tag: "addPerson")
-
-        returnedJson = ["status": -1]
-        while ((returnedJson["status"] as AnyObject? as? Int) == -1) {
-            returnedJson = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")!
-            sleep(2)
-        }
-        
-        handeler.sendRequestByURL(jsonObject6, tag: "driverAcceptRequest")
+//
+//        returnedJson = ["status": -1]
+//        while ((returnedJson["status"] as AnyObject? as? Int) == -1) {
+//            returnedJson = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")!
+//            sleep(2)
+//        }
+//        
+//        handeler.sendRequestByURL(jsonObject6, tag: "driverAcceptRequest")
         
 //        println("Printing Json object")
 //        println(returnedJson)
         
-        
+        */
         
         //=================================================================================//
         
