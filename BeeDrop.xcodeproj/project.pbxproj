@@ -29,8 +29,8 @@
 		5A4E364619D5D19200DB9439 /* Particles in Resources */ = {isa = PBXBuildFile; fileRef = 5A4E363C19D5D19200DB9439 /* Particles */; };
 		5A4E364D19D5DF1B00DB9439 /* FBShimmeringLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4E364A19D5DF1B00DB9439 /* FBShimmeringLayer.m */; };
 		5A4E364E19D5DF1B00DB9439 /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4E364C19D5DF1B00DB9439 /* FBShimmeringView.m */; };
-		5A4E365019D5EC4A00DB9439 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A4E364F19D5EC4A00DB9439 /* FacebookSDK.framework */; };
 		5A5448D919D6632E0070F516 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5448D819D6632E0070F516 /* SearchViewController.swift */; };
+		5A9B92E319D79F10008C990B /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9B92E219D79F10008C990B /* FacebookSDK.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,8 +74,8 @@
 		5A4E364A19D5DF1B00DB9439 /* FBShimmeringLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringLayer.m; sourceTree = "<group>"; };
 		5A4E364B19D5DF1B00DB9439 /* FBShimmeringView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBShimmeringView.h; sourceTree = "<group>"; };
 		5A4E364C19D5DF1B00DB9439 /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
-		5A4E364F19D5EC4A00DB9439 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = ../../Documents/FacebookSDK/FacebookSDK.framework; sourceTree = "<group>"; };
 		5A5448D819D6632E0070F516 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		5A9B92E219D79F10008C990B /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A4E365019D5EC4A00DB9439 /* FacebookSDK.framework in Frameworks */,
+				5A9B92E319D79F10008C990B /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -169,7 +169,7 @@
 		5A4E362A19D5CC8000DB9439 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				5A4E364F19D5EC4A00DB9439 /* FacebookSDK.framework */,
+				5A9B92E219D79F10008C990B /* FacebookSDK.framework */,
 				5A4E362B19D5CC8900DB9439 /* BlurView.swift */,
 				5A4E363319D5D19200DB9439 /* LTEasing.swift */,
 				5A4E363419D5D19200DB9439 /* LTMorphingLabel.swift */,
@@ -438,6 +438,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/lwxted/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = BeeDrop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -455,6 +456,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					/Users/lwxted/Documents/FacebookSDK,
+					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = BeeDrop/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
