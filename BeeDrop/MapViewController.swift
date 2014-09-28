@@ -500,6 +500,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                         var intId: Int = id.toInt()!
                         newDriverList += [(name: retName, rating: retRating, ID: intId)]
                     }
+
                     
                     // Check if the new upated list is the same as the current saved list
                     var bSameList = true
@@ -511,16 +512,16 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                             }
                         }
                     }
-                }
-                else {
-                    bSameList = false
-                }
-                if !bSameList {
-                    println("Updated the driverlist")
-                    
-                    self.driverList.removeAll(keepCapacity: false)
-                    self.driverList = newDriverList
-                    self.reloadDriverListView()
+                    else {
+                        bSameList = false
+                    }
+                    if !bSameList {
+                        println("Updated the driverlist")
+                        
+                        self.driverList.removeAll(keepCapacity: false)
+                        self.driverList = newDriverList
+                        self.reloadDriverListView()
+                    }
                 }
             }
         })

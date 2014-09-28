@@ -19,9 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Jiaji test driver-side alert window
       //  dispatch_async(dispatch_queue_create("poll", nil), {
-            var alertWindow = AlertWindow()
-            var info = alertWindow.driverAcceptDataHelper()
-            alertWindow.showDriverAccept(info)
+//            var alertWindow = AlertWindow()
+//            var info = alertWindow.driverAcceptDataHelper()
+//            alertWindow.showDriverAccept(info)
       //  })
        /*
         //Hongyi tryout here
