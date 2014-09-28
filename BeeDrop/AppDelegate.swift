@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         //User
 //        handeler.sendRequestByURL(jsonObject, tag: "addPerson")
-//        handeler.sendRequestByURL(driverObject, tag: "addPerson")
+        handeler.sendRequestByURL(driverObject, tag: "addPerson")
 //        handeler.sendRequestByURL(jsonObject1, tag: "submitUserDeliveryForm")
 //        handeler.sendRequestByURL(jsonObject2, tag: "listNearbyDrivers")
 //        handeler.sendRequestByURL(jsonObject3, tag: "selectDriver")
@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         //Driver
-//        handeler.sendRequestByURL(driverObject1, tag: "addPerson")
+        handeler.sendRequestByURL(driverObject1, tag: "addPerson")
 //
 //        returnedJson = ["status": -1]
 //        while ((returnedJson["status"] as AnyObject? as? Int) == -1) {

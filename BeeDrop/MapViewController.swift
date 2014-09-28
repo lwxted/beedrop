@@ -64,13 +64,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     /** driveList related variables **/
     var driverListView : UITableView?
     let cellHeight : CGFloat = 44.0
-    var driverList : [(name: String, rating: Int)] = [("Only a test", 3), ("Like a boss", 4), ("sdf", 4)]
+    var driverList : [(name: String, rating: Int, ID: Int)] = [("Only a test", 3, 55)]
     let driverListTableViewCellIdentifier = "driverListTableViewCell"
+    var driverListFetchTerminate = false
     /** **/
     
     var statusView : StatusView?
     
+    // Hongyi adding handler
+    var handeler = RequestHandler()
+    
     // MARK: View setups
+    
     func setupMapView() {
         
         span = MKCoordinateSpanMake(latDelta, longDelta)
@@ -435,16 +440,17 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func reloadDriverListView() {
-        driverListView?.frame = CGRectMake(
-            driverListView!.frame.origin.x,
-            driverListView!.frame.origin.y + driverListView!.frame.size.height,
-            driverListView!.frame.size.width,
-            (CGFloat(driverList.count)) * cellHeight + 10)
-        driverListView?.reloadData()
-        driverListView?.setNeedsDisplay()
+//        driverListView!.frame = CGRectMake(
+//            driverListView!.frame.origin.x,
+//            driverListView!.frame.origin.y,
+//            driverListView!.frame.size.width,
+//            (CGFloat(driverList.count)) * cellHeight + 10)
+        driverListView!.reloadData()
     }
     
     func tappedCheckButton() {
+        driverListFetchTerminate = true
+        
         resignResponder()
         view.removeGestureRecognizer(tapGestureRecognizer!)
         removeNotificationCenter()
@@ -457,12 +463,64 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         UIView.animateWithDuration(0.5, delay: 0.5, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             self.driverListView!.transform = CGAffineTransformMakeTranslation(0, -self.driverListView!.frame.size.height + 2)
         }, completion: nil)
+//        
+//        var delayInSeconds = 1.0
+//        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//        dispatch_after(popTime, dispatch_get_main_queue(), {
+//            self.driverList += [("Fuck", 2)]
+//            self.reloadDriverListView()
+
         
-        var delayInSeconds = 1.0
-        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
-        dispatch_after(popTime, dispatch_get_main_queue(), {
-            self.driverList += [("Fuck", 2)]
-            self.reloadDriverListView()
+        var submitForm: [String: AnyObject] = [String: AnyObject]()
+        
+        submitForm["ID"] = 21
+        submitForm["fromLoc"] = [0.3, 0.0]
+        submitForm["toLoc"] = [0.3, 0.0]
+        submitForm["requestProduct"] = itemRequest?.text
+        submitForm["payment"] = payment?.text
+        submitForm["passcode"] = passCode?.text
+        
+        handeler.sendRequestByURL(submitForm, tag: "submitUserDeliveryForm")
+        
+        dispatch_async(dispatch_queue_create("driverListQueue", nil), {
+            let listDriverJson: [String: AnyObject] = ["ID": 21]
+            
+            while self.driverListFetchTerminate {
+                usleep(1000000)
+//                print("2")
+                var retDriverListNil: [String: AnyObject]? = self.handeler.sendRequestByURL(listDriverJson, tag: "listNearbyDrivers")
+
+                if let retDriverList = retDriverListNil {
+                    var newDriverList : [(name: String, rating: Int, ID: Int)] = []
+                    // Add the drivers to the list
+                    for (id: String, data: AnyObject) in retDriverList {
+                        var dataDict: [String: AnyObject] = data as [String: AnyObject]
+                        var retName: String = dataDict["name"] as AnyObject? as String
+                        var retRating: Int = dataDict["rating"] as AnyObject? as Int
+                        var intId: Int = id.toInt()!
+                        newDriverList += [(name: retName, rating: retRating, ID: intId)]
+                    }
+                    
+                    // Check if the new upated list is the same as the current saved list
+                    var bSameList = true
+                    if (newDriverList.count == self.driverList.count) {
+                        for i in 0..<self.driverList.count {
+                            if (self.driverList[i].ID != newDriverList[i].ID) {
+                                bSameList = false
+                                break
+                            }
+                        }
+                    }
+                    else {
+                        bSameList = false
+                    }
+                    if !bSameList {
+                        println("Updated the driverlist")
+                        self.driverList = newDriverList
+                        self.reloadDriverListView()
+                    }
+                }
+            }
         })
     }
     
@@ -479,9 +537,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         let cell = tableView.dequeueReusableCellWithIdentifier(driverListTableViewCellIdentifier, forIndexPath: indexPath) as UITableViewCell
         
         cell.backgroundColor = UIColor.clearColor()
-        var (text, rating) = driverList[indexPath.row]
+        var (text, rating, ID) = driverList[indexPath.row]
         cell.textLabel?.text = text
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println("Driver id \(driverList[indexPath.row].ID)")
+        
     }
 }
