@@ -33,19 +33,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         var handeler = RequestHandler()
         
+        var returnedJson :[String: AnyObject] = ["status": -1]
+        
+        //User
         handeler.sendRequestByURL(jsonObject, tag: "addPerson")
         handeler.sendRequestByURL(driverObject, tag: "addPerson")
-        handeler.sendRequestByURL(driverObject1, tag: "addPerson")
         handeler.sendRequestByURL(jsonObject1, tag: "submitUserDeliveryForm")
         handeler.sendRequestByURL(jsonObject2, tag: "listNearbyDrivers")
         handeler.sendRequestByURL(jsonObject3, tag: "selectDriver")
-        handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")
-        handeler.sendRequestByURL(jsonObject5, tag: "pollDriverAck")
-        handeler.sendRequestByURL(jsonObject6, tag: "driverAcceptRequest")
-        var returnedJson = handeler.sendRequestByURL(jsonObject5, tag: "pollDriverAck")
         
-        println("Printing Json object")
-        println(returnedJson)
+        while ( (returnedJson["status"] as AnyObject? as? Int) == -1) {
+            returnedJson = handeler.sendRequestByURL(jsonObject5, tag: "pollDriverAck")!
+            sleep(2)
+        }
+        
+        //Driver
+        handeler.sendRequestByURL(driverObject1, tag: "addPerson")
+
+        returnedJson = ["status": -1]
+        while ((returnedJson["status"] as AnyObject? as? Int) == -1) {
+            handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")
+            sleep(2)
+        }
+        
+        handeler.sendRequestByURL(jsonObject6, tag: "driverAcceptRequest")
+        
+//        println("Printing Json object")
+//        println(returnedJson)
+        
+        
         
         //=================================================================================//
         
