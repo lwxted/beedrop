@@ -99,7 +99,7 @@ def findMatchForRequest(fromLoc):
 
     print 'FindMatch using (%f, %f)' % (reqX, reqY)
     # A list of close by drivers within a square bounding box
-    allPotentialDrivers = {}
+    allPotentialDrivers = {"status": 0}
     for x_coord in locToUserDB:
         x_dist = abs(reqX-x_coord)
         if x_dist <= distThreshold:
