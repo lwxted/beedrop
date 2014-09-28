@@ -35,6 +35,22 @@ class MapViewController: UIViewController, MKMapViewDelegate {
 
         setupMapView()
         // Do any additional setup after loading the view.
+        
+        var statusView = StatusView()
+        statusView.setStatus(StatusType.Delivering)
+        var delayInSeconds = 1.5
+        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+        dispatch_after(popTime, dispatch_get_main_queue(), {
+            self.view.addSubview(statusView.mview)
+            statusView.appear()
+            
+            var delayInSeconds2 = 3.0
+            var popTime2 = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+            dispatch_after(popTime2, dispatch_get_main_queue(), {
+                statusView.disappear()
+            });
+        });
+
     }
 
     override func didReceiveMemoryWarning() {
