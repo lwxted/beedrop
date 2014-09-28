@@ -64,7 +64,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     /** driveList related variables **/
     var driverListView : UITableView?
     let cellHeight : CGFloat = 44.0
-    var driverList = [("Only a test", 3), ("Like a boss", 4)]
+    var driverList : [(name: String, rating: Int)] = [("Only a test", 3), ("Like a boss", 4), ("sdf", 4)]
     let driverListTableViewCellIdentifier = "driverListTableViewCell"
     /** **/
     
@@ -136,6 +136,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
     func setupDriverListView() {
         driverListView = UITableView(frame: CGRectMake(-2, SCREEN_HEIGHT, SCREEN_WIDTH + 4, 0))
+        
+//        dispatch_async(dispatch_queue_create("driverListQueue", nil), {
+//            while true {
+//                sleep(5)
+//                print("2")
+//                self.driverList.removeAll()
+//                var tup = (name: "2", rating: 2)
+//                self.driverList += [(name: "2", rating: 2)]
+//                self.reloadDriverListView()
+//            }
+//        })
+        
         driverListView?.contentInset = UIEdgeInsetsMake(5, 0, 2, 0)
         driverListView?.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 0.95)
         driverListView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: driverListTableViewCellIdentifier)
