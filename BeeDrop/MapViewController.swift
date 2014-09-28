@@ -70,7 +70,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
     var statusView : StatusView?
     
-
+    // MARK: View setups
     func setupMapView() {
         
         span = MKCoordinateSpanMake(latDelta, longDelta)
@@ -137,17 +137,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     func setupDriverListView() {
         driverListView = UITableView(frame: CGRectMake(-2, SCREEN_HEIGHT, SCREEN_WIDTH + 4, 0))
         
-//        dispatch_async(dispatch_queue_create("driverListQueue", nil), {
-//            while true {
-//                sleep(5)
-//                print("2")
-//                self.driverList.removeAll()
-//                var tup = (name: "2", rating: 2)
-//                self.driverList += [(name: "2", rating: 2)]
-//                self.reloadDriverListView()
-//            }
-//        })
-        
         driverListView?.contentInset = UIEdgeInsetsMake(5, 0, 2, 0)
         driverListView?.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 0.95)
         driverListView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: driverListTableViewCellIdentifier)
@@ -158,27 +147,27 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func setupStatusView() {
-        statusView = StatusView(status: .Pending)
+        statusView = StatusView(status: .Delivering)
         statusView?.delegate = self
         UIApplication.sharedApplication().keyWindow.addSubview(statusView!)
         
-//        var delayInSeconds = 4.0
+//        var delayInSeconds = 1.0
 //        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
 //            self.statusView!.appear()
 //        })
-//        
-//        delayInSeconds = 6.0
+//
+//        delayInSeconds = 3.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
 //            self.statusView!.status = .Done
 //            self.statusView!.updateStatus()
 //        })
 //        
-//        delayInSeconds = 8.0
+//        delayInSeconds = 5.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
-//            self.statusView!.status = .Delivering
+//            self.statusView!.status = .Pending
 //            self.statusView!.updateStatus()
 //        })
     }
@@ -200,9 +189,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         // Dispose of any resources that can be recreated.
     }
     
-    func tappedSbar() {
-        performSegueWithIdentifier("tappedSearchBar", sender: self)
-    }
+    // MARK: Keyboard event handlers
     
     func keyboardWillShow(notification: NSNotification) {
         UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
@@ -215,6 +202,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             self.infoSheet!.transform = CGAffineTransformMakeTranslation(0, -320)
         }, completion: nil)
     }
+    
+    // MARK: Returned from search view
     
     func userEnteredFromToLocation() {
         view.addSubview(toolbar!)
@@ -313,6 +302,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         payment?.resignFirstResponder()
         passCode?.resignFirstResponder()
         deliverBy?.resignFirstResponder()
+    }
+    
+    func tappedSbar() {
+        performSegueWithIdentifier("tappedSearchBar", sender: self)
     }
     
     func tappedBeeDrop() {
@@ -444,10 +437,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     func reloadDriverListView() {
         driverListView?.frame = CGRectMake(
             driverListView!.frame.origin.x,
-            driverListView!.frame.origin.y,
+            driverListView!.frame.origin.y + driverListView!.frame.size.height,
             driverListView!.frame.size.width,
             (CGFloat(driverList.count)) * cellHeight + 10)
         driverListView?.reloadData()
+        driverListView?.setNeedsDisplay()
     }
     
     func tappedCheckButton() {
@@ -461,8 +455,15 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         }, completion: nil)
         
         UIView.animateWithDuration(0.5, delay: 0.5, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.driverListView!.transform = CGAffineTransformMakeTranslation(0, -self.driverListView!.frame.size.height+2)
+            self.driverListView!.transform = CGAffineTransformMakeTranslation(0, -self.driverListView!.frame.size.height + 2)
         }, completion: nil)
+        
+        var delayInSeconds = 1.0
+        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+        dispatch_after(popTime, dispatch_get_main_queue(), {
+            self.driverList += [("Fuck", 2)]
+            self.reloadDriverListView()
+        })
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

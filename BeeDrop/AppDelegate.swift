@@ -47,15 +47,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         //Driver
-        handeler.sendRequestByURL(driverObject1, tag: "addPerson")
-
-        returnedJson = ["status": -1]
-        while ((returnedJson["status"] as AnyObject? as? Int) == -1) {
-            returnedJson = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")!
-            sleep(2)
-        }
-        
-        handeler.sendRequestByURL(jsonObject6, tag: "driverAcceptRequest")
+//        handeler.sendRequestByURL(driverObject1, tag: "addPerson")
+//
+//        returnedJson = ["status": -1]
+//        while ((returnedJson["status"] as AnyObject? as? Int) == -1) {
+//            returnedJson = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")!
+//            sleep(2)
+//        }
+//        
+//        handeler.sendRequestByURL(jsonObject6, tag: "driverAcceptRequest")
         
 //        println("Printing Json object")
 //        println(returnedJson)
