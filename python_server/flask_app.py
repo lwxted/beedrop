@@ -156,9 +156,14 @@ def pollUserRequest():
 @app.route('/driverAcceptRequest', methods=['POST'])
 def driverAccept():
     j_data = request.get_json()
-    print 'pollDriverAck:',
+    print 'driverAcceptRequest:',
     print j_data
-
+    userID = j_data['userID']
+    p_data = personDB[userID]
+    p_devReq = p_data.devRequest
+    p_devReq.isAcceptedByDriver = True
+    success = {"status": 0}
+    return jsonify(**success)
 
 @app.route('/pollDriverAck', methods=['POST'])
 def pollDriverAck():
@@ -166,6 +171,12 @@ def pollDriverAck():
     print 'pollDriverAck:',
     print j_data
     userID = j_data['userID']
+    p_data = personDB[userID]
+    p_devReq = p_data.devRequest
+    success = {"status": -1}
+    if p_devReq.isAcceptedByDriver:
+        success = {"status": 0}
+    return jsonify(**success)
 
 if __name__ == '__main__':
     app.debug=True
