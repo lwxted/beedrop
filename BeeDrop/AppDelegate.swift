@@ -17,6 +17,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        // Jiaji test driver-side alert window
+      //  dispatch_async(dispatch_queue_create("poll", nil), {
+            var alertWindow = AlertWindow()
+            var info = alertWindow.driverAcceptDataHelper()
+            alertWindow.showDriverAccept(info)
+      //  })
+       /*
         //Hongyi tryout here
                 
         let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Bob", "curLoc": [0.3, 0.0] ]
@@ -60,7 +67,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        println("Printing Json object")
 //        println(returnedJson)
         
-        
+        */
         
         //=================================================================================//
         
