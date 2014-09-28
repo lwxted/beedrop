@@ -23,6 +23,8 @@ class AlertWindow {
         alert.show()
     }
     
+
+    
     func formDeliveryInfoMessage(info: [String: AnyObject]) -> String {
         var mAttr: [String] = []
         for keyword in delKeyWords {
@@ -35,6 +37,7 @@ class AlertWindow {
                 str = (info[keyword]! as? String)!
             }
             */
+            println(keyword)
             if (keyword == "payment") {
                 str = "\(info[keyword]! as Double)"
             } else {
@@ -61,17 +64,20 @@ class AlertWindow {
     
     func driverAcceptDataHelper() -> [String: AnyObject] {
         var info : [String: AnyObject]? = [String: AnyObject]()
-        let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Bob", "curLoc": [0.3, 0.0] ]
-        let driverObject: [String: AnyObject] = ["bUser": false, "ID": 52, "name": "Kim kardashian", "curLoc": [0.3, 0.0] ]
-        let driverObject1: [String: AnyObject] = ["bUser": false, "ID": 53, "name": "Lamar Odom", "curLoc": [0.30001, 0.0] ]
         
-        let jsonObject1: [String: AnyObject] = ["ID": 21, "fromLoc": [0.3, 0.0], "toLoc": [0.3, 0.0], "requestProduct": "shit", "payment": 0.1, "passcode":"fuckkkkkk"]
+        let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Ted", "curLoc": [0.3, 0.0] ]
+        let driverObject: [String: AnyObject] = ["bUser": false, "ID": 52, "name": "Mike", "curLoc": [0.3, 0.0] ]
+        let driverObject1: [String: AnyObject] = ["bUser": false, "ID": 53, "name": "Philips", "curLoc": [0.30001, 0.0] ]
+        
+        let jsonObject1: [String: AnyObject] = ["ID": 21, "fromLoc": [0.3, 0.0], "toLoc": [0.3, 0.0], "requestProduct": "shit", "payment": 0.1, "passcode":"1234"]
         let jsonObject2: [String: AnyObject] = ["ID": 21]
         let jsonObject3: [String: AnyObject] = ["userID": 21, "driverID": 53]
         let jsonObject4: [String: AnyObject] = ["driverID": 53]
         
         var handeler = RequestHandler()
-        
+        //clear database.
+        handeler.sendRequestByURL(jsonObject, tag: "clearAllDataBase")
+
         handeler.sendRequestByURL(jsonObject, tag: "addPerson")
         handeler.sendRequestByURL(driverObject, tag: "addPerson")
         handeler.sendRequestByURL(driverObject1, tag: "addPerson")
@@ -79,6 +85,7 @@ class AlertWindow {
         handeler.sendRequestByURL(jsonObject2, tag: "listNearbyDrivers")
         handeler.sendRequestByURL(jsonObject3, tag: "selectDriver")
         info = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")
+        println(info)
         return info!
     }
     
