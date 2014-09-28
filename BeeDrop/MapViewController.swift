@@ -156,25 +156,25 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         statusView?.delegate = self
         UIApplication.sharedApplication().keyWindow.addSubview(statusView!)
         
-        var delayInSeconds = 1.0
-        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
-        dispatch_after(popTime, dispatch_get_main_queue(), {
-            self.statusView!.appear()
-        })
-
-        delayInSeconds = 3.0
-        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
-        dispatch_after(popTime, dispatch_get_main_queue(), {
-            self.statusView!.status = .Done
-            self.statusView!.updateStatus()
-        })
-        
-        delayInSeconds = 5.0
-        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
-        dispatch_after(popTime, dispatch_get_main_queue(), {
-            self.statusView!.status = .Pending
-            self.statusView!.updateStatus()
-        })
+//        var delayInSeconds = 1.0
+//        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//        dispatch_after(popTime, dispatch_get_main_queue(), {
+//            self.statusView!.appear()
+//        })
+//
+//        delayInSeconds = 3.0
+//        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//        dispatch_after(popTime, dispatch_get_main_queue(), {
+//            self.statusView!.status = .Done
+//            self.statusView!.updateStatus()
+//        })
+//        
+//        delayInSeconds = 5.0
+//        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//        dispatch_after(popTime, dispatch_get_main_queue(), {
+//            self.statusView!.status = .Pending
+//            self.statusView!.updateStatus()
+//        })
     }
 
     override func viewDidLoad() {
