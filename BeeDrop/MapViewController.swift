@@ -152,7 +152,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func setupStatusView() {
-        statusView = StatusView(status: .Delivering)
+        statusView = StatusView(status: .Pending)
         statusView?.delegate = self
         UIApplication.sharedApplication().keyWindow.addSubview(statusView!)
         
@@ -179,6 +179,21 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        var loginJson: [String: AnyObject] = [String: AnyObject]()
+        
+        loginJson["bUser"] = true
+        loginJson["ID"] = 21
+        loginJson["name"] = "Michael Jordan"
+        var lat = 0.0
+        var long = 0.0
+        if let cl = currentLocation {
+            lat = cl.latitude
+            long = cl.longitude
+        }
+        loginJson["curLoc"] = [lat, long]
+        
+        handeler.sendRequestByURL(loginJson, tag: "addPerson")
 
         setupCoreLocation()
         setupMapView()
@@ -468,14 +483,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
 //        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
 //            self.driverList += [("Fuck", 2)]
-//            self.reloadDriverListView()
+//        self.reloadDriverListView()
 
         
         var submitForm: [String: AnyObject] = [String: AnyObject]()
         
         submitForm["ID"] = 21
-        submitForm["fromLoc"] = [0.3, 0.0]
-        submitForm["toLoc"] = [0.3, 0.0]
+        submitForm["fromLoc"] = [fromLocation!.placemark.coordinate.latitude, fromLocation!.placemark.coordinate.longitude]
+        submitForm["toLoc"] = [toLocation!.placemark.coordinate.latitude, toLocation!.placemark.coordinate.longitude]
         submitForm["requestProduct"] = itemRequest?.text
         submitForm["payment"] = payment?.text
         submitForm["passcode"] = passCode?.text
@@ -548,6 +563,47 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         println("Driver id \(driverList[indexPath.row].ID)")
+        var userSelectDriverJson: [String: AnyObject] = [String: AnyObject]()
+        userSelectDriverJson["userID"] = 21
+        userSelectDriverJson["driverID"] = driverList[indexPath.row].ID
         
+        handeler.sendRequestByURL(userSelectDriverJson, tag: "selectDriver")
+        
+        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
+            self.driverListView!.alpha = 0
+            }, completion: {
+                finished in
+                self.driverListView!.removeFromSuperview()
+                self.statusView!.appear()
+                
+                dispatch_async(dispatch_queue_create("waitConfirmQueue", nil), {
+                    
+                    var returnedJson: [String: AnyObject] = [String: AnyObject]()
+                    let userConfirmJson: [String: AnyObject] = ["userID": 21]
+                    
+                    var retStatus = -1
+                    
+                    while (retStatus == -1) {
+                        usleep(500000)
+                        var retStatusJsonNil: [String: AnyObject]? = self.handeler.sendRequestByURL(userConfirmJson, tag: "pollDriverAck")
+                        
+                        if let retStatusJson = retStatusJsonNil {
+                            retStatus = retStatusJson["status"] as AnyObject? as Int
+                            
+                            
+                        }
+                    }
+                    
+                    dispatch_async(dispatch_get_main_queue(), {
+                        self.statusView!.status = .Delivering
+                        self.statusView!.updateStatus()
+                    })
+                })
+
+                
+                
+//              self.statusView!.status = .Delivering
+//              self.statusView!.updateStatus()
+        })
     }
 }

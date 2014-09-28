@@ -190,10 +190,6 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
         dispatch_after(popTime, dispatch_get_main_queue(), {
             self.performSegueWithIdentifier("facebookLoggedIn", sender: self)
         });
-        
-        let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Bob", "curLoc": [0.3, 0.0] ]
-        
-        handeler.sendRequestByURL(jsonObject, tag: "addPerson")
     }
 }
 
