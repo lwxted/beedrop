@@ -64,13 +64,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     /** driveList related variables **/
     var driverListView : UITableView?
     let cellHeight : CGFloat = 44.0
-    var driverList : [(name: String, rating: Int)] = [("Only a test", 3), ("Like a boss", 4), ("sdf", 4)]
+    var driverList : [(name: String, rating: Int, ID: Int)] = [("Only a test", 3, 55)]
     let driverListTableViewCellIdentifier = "driverListTableViewCell"
+    var driverListFetchTerminate = false
     /** **/
     
     var statusView : StatusView?
     
-
+    // Hongyi adding handler
+    var handeler = RequestHandler()
+    
+    // MARK: View setups
+    
     func setupMapView() {
         
         span = MKCoordinateSpanMake(latDelta, longDelta)
@@ -137,17 +142,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     func setupDriverListView() {
         driverListView = UITableView(frame: CGRectMake(-2, SCREEN_HEIGHT, SCREEN_WIDTH + 4, 0))
         
-//        dispatch_async(dispatch_queue_create("driverListQueue", nil), {
-//            while true {
-//                sleep(5)
-//                print("2")
-//                self.driverList.removeAll()
-//                var tup = (name: "2", rating: 2)
-//                self.driverList += [(name: "2", rating: 2)]
-//                self.reloadDriverListView()
-//            }
-//        })
-        
         driverListView?.contentInset = UIEdgeInsetsMake(5, 0, 2, 0)
         driverListView?.backgroundColor = UIColor(red: 245.0/255.0, green: 245.0/255.0, blue: 245.0/255.0, alpha: 0.95)
         driverListView?.registerClass(UITableViewCell.self, forCellReuseIdentifier: driverListTableViewCellIdentifier)
@@ -158,27 +152,27 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func setupStatusView() {
-        statusView = StatusView(status: .Pending)
+        statusView = StatusView(status: .Delivering)
         statusView?.delegate = self
         UIApplication.sharedApplication().keyWindow.addSubview(statusView!)
         
-//        var delayInSeconds = 4.0
+//        var delayInSeconds = 1.0
 //        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
 //            self.statusView!.appear()
 //        })
-//        
-//        delayInSeconds = 6.0
+//
+//        delayInSeconds = 3.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
 //            self.statusView!.status = .Done
 //            self.statusView!.updateStatus()
 //        })
 //        
-//        delayInSeconds = 8.0
+//        delayInSeconds = 5.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
-//            self.statusView!.status = .Delivering
+//            self.statusView!.status = .Pending
 //            self.statusView!.updateStatus()
 //        })
     }
@@ -200,9 +194,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         // Dispose of any resources that can be recreated.
     }
     
-    func tappedSbar() {
-        performSegueWithIdentifier("tappedSearchBar", sender: self)
-    }
+    // MARK: Keyboard event handlers
     
     func keyboardWillShow(notification: NSNotification) {
         UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: {
@@ -215,6 +207,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             self.infoSheet!.transform = CGAffineTransformMakeTranslation(0, -320)
         }, completion: nil)
     }
+    
+    // MARK: Returned from search view
     
     func userEnteredFromToLocation() {
         view.addSubview(toolbar!)
@@ -313,6 +307,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         payment?.resignFirstResponder()
         passCode?.resignFirstResponder()
         deliverBy?.resignFirstResponder()
+    }
+    
+    func tappedSbar() {
+        performSegueWithIdentifier("tappedSearchBar", sender: self)
     }
     
     func tappedBeeDrop() {
@@ -442,15 +440,17 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func reloadDriverListView() {
-        driverListView?.frame = CGRectMake(
-            driverListView!.frame.origin.x,
-            driverListView!.frame.origin.y,
-            driverListView!.frame.size.width,
-            (CGFloat(driverList.count)) * cellHeight + 10)
-        driverListView?.reloadData()
+//        driverListView!.frame = CGRectMake(
+//            driverListView!.frame.origin.x,
+//            driverListView!.frame.origin.y,
+//            driverListView!.frame.size.width,
+//            (CGFloat(driverList.count)) * cellHeight + 10)
+        driverListView!.reloadData()
     }
     
     func tappedCheckButton() {
+        driverListFetchTerminate = true
+        
         resignResponder()
         view.removeGestureRecognizer(tapGestureRecognizer!)
         removeNotificationCenter()
@@ -461,8 +461,67 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         }, completion: nil)
         
         UIView.animateWithDuration(0.5, delay: 0.5, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.driverListView!.transform = CGAffineTransformMakeTranslation(0, -self.driverListView!.frame.size.height+2)
+            self.driverListView!.transform = CGAffineTransformMakeTranslation(0, -self.driverListView!.frame.size.height + 2)
         }, completion: nil)
+//        
+//        var delayInSeconds = 1.0
+//        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+//        dispatch_after(popTime, dispatch_get_main_queue(), {
+//            self.driverList += [("Fuck", 2)]
+//            self.reloadDriverListView()
+
+        
+        var submitForm: [String: AnyObject] = [String: AnyObject]()
+        
+        submitForm["ID"] = 21
+        submitForm["fromLoc"] = [0.3, 0.0]
+        submitForm["toLoc"] = [0.3, 0.0]
+        submitForm["requestProduct"] = itemRequest?.text
+        submitForm["payment"] = payment?.text
+        submitForm["passcode"] = passCode?.text
+        
+        handeler.sendRequestByURL(submitForm, tag: "submitUserDeliveryForm")
+        
+        dispatch_async(dispatch_queue_create("driverListQueue", nil), {
+            let listDriverJson: [String: AnyObject] = ["ID": 21]
+            
+            while self.driverListFetchTerminate {
+                usleep(1000000)
+//                print("2")
+                var retDriverListNil: [String: AnyObject]? = self.handeler.sendRequestByURL(listDriverJson, tag: "listNearbyDrivers")
+
+                if let retDriverList = retDriverListNil {
+                    var newDriverList : [(name: String, rating: Int, ID: Int)] = []
+                    // Add the drivers to the list
+                    for (id: String, data: AnyObject) in retDriverList {
+                        var dataDict: [String: AnyObject] = data as [String: AnyObject]
+                        var retName: String = dataDict["name"] as AnyObject? as String
+                        var retRating: Int = dataDict["rating"] as AnyObject? as Int
+                        var intId: Int = id.toInt()!
+                        newDriverList += [(name: retName, rating: retRating, ID: intId)]
+                    }
+                    
+                    // Check if the new upated list is the same as the current saved list
+                    var bSameList = true
+                    if (newDriverList.count == self.driverList.count) {
+                        for i in 0..<self.driverList.count {
+                            if (self.driverList[i].ID != newDriverList[i].ID) {
+                                bSameList = false
+                                break
+                            }
+                        }
+                    }
+                    else {
+                        bSameList = false
+                    }
+                    if !bSameList {
+                        println("Updated the driverlist")
+                        self.driverList = newDriverList
+                        self.reloadDriverListView()
+                    }
+                }
+            }
+        })
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -478,9 +537,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         let cell = tableView.dequeueReusableCellWithIdentifier(driverListTableViewCellIdentifier, forIndexPath: indexPath) as UITableViewCell
         
         cell.backgroundColor = UIColor.clearColor()
-        var (text, rating) = driverList[indexPath.row]
+        var (text, rating, ID) = driverList[indexPath.row]
         cell.textLabel?.text = text
         
         return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println("Driver id \(driverList[indexPath.row].ID)")
+        
     }
 }

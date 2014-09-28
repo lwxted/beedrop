@@ -60,9 +60,9 @@ class RequestHandler : NSObject, NSURLConnectionDataDelegate {
         if let retData = retDataNil {
             // look at the response
             if let httpResponse = response as? NSHTTPURLResponse {
-                println("HTTP response: \(httpResponse.statusCode)")
+//                println("HTTP response: \(httpResponse.statusCode)")
                 var retString: String = NSString(data:retData, encoding:NSUTF8StringEncoding)
-                println(retString)
+//                println(retString)
                 return JSONParseArray(retString) as? [String: AnyObject]
             } else {
                 println("No HTTP response")
