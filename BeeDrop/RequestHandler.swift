@@ -8,8 +8,8 @@
 
 import Foundation
 
-let HOST_URL = "128.237.187.154:5000"
-//let HOST_URL = "calm-sands-2322.herokuapp.com"
+//let HOST_URL = "128.237.187.154:5000"
+let HOST_URL = "calm-sands-2322.herokuapp.com"
 
 class RequestHandler : NSObject, NSURLConnectionDataDelegate {
     

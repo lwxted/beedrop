@@ -502,6 +502,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                 }
                 if !bSameList {
                     println("Updated the driverlist")
+                    
+                    self.driverList.removeAll(keepCapacity: false)
                     self.driverList = newDriverList
                     self.reloadDriverListView()
                 }
