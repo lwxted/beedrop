@@ -17,6 +17,74 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
+        //Hongyi tryout here
+        let HOST_URL = "128.237.187.154:5000"
+        
+        let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Bob", "curLoc": [0.3, 0.0] ]
+        let driverObject: [String: AnyObject] = ["bUser": false, "ID": 52, "name": "Kim kardashian", "curLoc": [0.3, 0.0] ]
+        let driverObject1: [String: AnyObject] = ["bUser": false, "ID": 53, "name": "Lamar Odom", "curLoc": [0.30001, 0.0] ]
+        
+        let jsonObject1: [String: AnyObject] = ["ID": 21, "fromLoc": [0.3, 0.0], "toLoc": [0.3, 0.0], "requestProduct": "shit", "payment": 0.1, "passcode":"fuckkkkkk"]
+        let jsonObject2: [String: AnyObject] = ["ID": 21]
+        let jsonObject3: [String: AnyObject] = ["userID": 21, "driverID": 53]
+        let jsonObject4: [String: AnyObject] = ["driverID": 53]
+        let jsonObject5: [String: AnyObject] = ["userID": 21]
+        let jsonObject6: [String: AnyObject] = ["userID": 21]
+        
+//
+//        func JSONStringify(jsonObj: AnyObject) -> String {
+//            var e: NSError?
+//            let jsonData: NSData! = NSJSONSerialization.dataWithJSONObject(
+//                jsonObj,
+//                options: NSJSONWritingOptions(0),
+//                error: &e)
+//            if e != nil {
+//                return ""
+//            } else {
+//                return NSString(data: jsonData, encoding: NSUTF8StringEncoding)
+//            }
+//        }
+//        
+//        let jsonString = JSONStringify(jsonObject)
+//        
+//        // create the request & response
+//        var request = NSMutableURLRequest(URL: NSURL(string: "http://" + HOST_URL + "/addPerson"), cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 5)
+//        var response: NSURLResponse?
+//        var error: NSError?
+//        
+//        // create some JSON data and configure the request
+//        request.HTTPBody = jsonString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
+//        request.HTTPMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        
+//        // send the request
+//        var retData: NSData = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)!
+//        
+//        // look at the response
+//        if let httpResponse = response as? NSHTTPURLResponse {
+//            println("HTTP response: \(httpResponse.statusCode)")
+//            var retString: String = NSString(data:retData, encoding:NSUTF8StringEncoding)
+//            println(retString)
+//        } else {
+//            println("No HTTP response")
+//        }
+        
+        var handeler = RequestHandler()
+        
+        handeler.sendRequestByURL(jsonObject, tag: "addPerson")
+        handeler.sendRequestByURL(driverObject, tag: "addPerson")
+        handeler.sendRequestByURL(driverObject1, tag: "addPerson")
+        handeler.sendRequestByURL(jsonObject1, tag: "submitUserDeliveryForm")
+        handeler.sendRequestByURL(jsonObject2, tag: "listNearbyDrivers")
+        handeler.sendRequestByURL(jsonObject3, tag: "selectDriver")
+        handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")
+        handeler.sendRequestByURL(jsonObject5, tag: "pollDriverAck")
+        handeler.sendRequestByURL(jsonObject6, tag: "driverAcceptRequest")
+        var returnedJson = handeler.sendRequestByURL(jsonObject5, tag: "pollDriverAck")
+        
+        println("Printing Json object")
+        println(returnedJson)
+        
         return true
     }
 
