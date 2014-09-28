@@ -31,44 +31,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let jsonObject5: [String: AnyObject] = ["userID": 21]
         let jsonObject6: [String: AnyObject] = ["userID": 21]
         
-//
-//        func JSONStringify(jsonObj: AnyObject) -> String {
-//            var e: NSError?
-//            let jsonData: NSData! = NSJSONSerialization.dataWithJSONObject(
-//                jsonObj,
-//                options: NSJSONWritingOptions(0),
-//                error: &e)
-//            if e != nil {
-//                return ""
-//            } else {
-//                return NSString(data: jsonData, encoding: NSUTF8StringEncoding)
-//            }
-//        }
-//        
-//        let jsonString = JSONStringify(jsonObject)
-//        
-//        // create the request & response
-//        var request = NSMutableURLRequest(URL: NSURL(string: "http://" + HOST_URL + "/addPerson"), cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 5)
-//        var response: NSURLResponse?
-//        var error: NSError?
-//        
-//        // create some JSON data and configure the request
-//        request.HTTPBody = jsonString.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: true)
-//        request.HTTPMethod = "POST"
-//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        
-//        // send the request
-//        var retData: NSData = NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)!
-//        
-//        // look at the response
-//        if let httpResponse = response as? NSHTTPURLResponse {
-//            println("HTTP response: \(httpResponse.statusCode)")
-//            var retString: String = NSString(data:retData, encoding:NSUTF8StringEncoding)
-//            println(retString)
-//        } else {
-//            println("No HTTP response")
-//        }
-        
         var handeler = RequestHandler()
         
         handeler.sendRequestByURL(jsonObject, tag: "addPerson")
@@ -84,6 +46,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         println("Printing Json object")
         println(returnedJson)
+        
+        //=================================================================================//
         
         return true
     }
