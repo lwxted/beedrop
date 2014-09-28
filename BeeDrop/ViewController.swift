@@ -138,6 +138,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         self.setupBackgroundImageView()
         var delayInSeconds = 0.5
         var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))

@@ -31,6 +31,7 @@
 		5A4E364E19D5DF1B00DB9439 /* FBShimmeringView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5A4E364C19D5DF1B00DB9439 /* FBShimmeringView.m */; };
 		5A5448D919D6632E0070F516 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5448D819D6632E0070F516 /* SearchViewController.swift */; };
 		5A9B92E319D79F10008C990B /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A9B92E219D79F10008C990B /* FacebookSDK.framework */; };
+		5A9B92E719D7C551008C990B /* StatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A9B92E619D7C551008C990B /* StatusView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +77,7 @@
 		5A4E364C19D5DF1B00DB9439 /* FBShimmeringView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FBShimmeringView.m; sourceTree = "<group>"; };
 		5A5448D819D6632E0070F516 /* SearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		5A9B92E219D79F10008C990B /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		5A9B92E619D7C551008C990B /* StatusView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				5A4E360719D5B45500DB9439 /* AppDelegate.swift */,
 				5A4E360919D5B45500DB9439 /* ViewController.swift */,
 				5A3CBCA919D60BF800320650 /* MapViewController.swift */,
+				5A9B92E619D7C551008C990B /* StatusView.swift */,
 				5A5448D819D6632E0070F516 /* SearchViewController.swift */,
 				5A4E360B19D5B45500DB9439 /* Main.storyboard */,
 				5A4E360E19D5B45500DB9439 /* Images.xcassets */,
@@ -306,6 +309,7 @@
 				5A4E363E19D5D19200DB9439 /* LTMorphingLabel.swift in Sources */,
 				5A4E362C19D5CC8900DB9439 /* BlurView.swift in Sources */,
 				5A4E364D19D5DF1B00DB9439 /* FBShimmeringLayer.m in Sources */,
+				5A9B92E719D7C551008C990B /* StatusView.swift in Sources */,
 				5A4E364219D5D19200DB9439 /* LTMorphingLabel+Fall.swift in Sources */,
 				5A4E364319D5D19200DB9439 /* LTMorphingLabel+Pixelate.swift in Sources */,
 				5A3CBCAA19D60BF800320650 /* MapViewController.swift in Sources */,
