@@ -52,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         returnedJson = ["status": -1]
         while ((returnedJson["status"] as AnyObject? as? Int) == -1) {
-            handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")
+            returnedJson = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")!
             sleep(2)
         }
         
