@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="7yL-pc-Ghh">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="BeeDrop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <segue destination="abn-jM-lAx" kind="presentation" identifier="facebookLoggedIn" id="5Rb-eC-JgE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="306" y="13"/>
+        </scene>
+        <!--Status View Controller-->
+        <scene sceneID="FCO-DF-mVf">
+            <objects>
+                <viewController id="7yL-pc-Ghh" customClass="StatusViewController" customModule="BeeDrop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="P4k-if-8en"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZOs-dF-iZf"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="s2P-9g-UZs">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="waiting.png" translatesAutoresizingMaskIntoConstraints="NO" id="PD4-Fk-v0b">
+                                <rect key="frame" x="8" y="15" width="76" height="80"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="statusIcon" destination="PD4-Fk-v0b" id="45G-uo-lng"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CZZ-NG-5aQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1059" y="-759"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Kf8-pR-yCb">
+            <objects>
+                <navigationController id="abn-jM-lAx" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Iqf-Xt-P7z">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="2C6-UY-BbO" kind="relationship" relationship="rootViewController" id="uBO-9S-Iv4"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="gT0-tq-tdM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1027" y="13"/>
+        </scene>
+        <!--BeeDrop-->
+        <scene sceneID="IEs-jM-ekj">
+            <objects>
+                <viewController id="2C6-UY-BbO" customClass="MapViewController" customModule="BeeDrop" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="AIa-Lm-wd4"/>
+                        <viewControllerLayoutGuide type="bottom" id="ZwF-3T-Hbz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="N3u-jd-Faq">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="BeeDrop" id="cFu-58-3AP"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Bea-QW-CSB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1747" y="13"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="waiting.png" width="512" height="512"/>
+    </resources>
+</document>
