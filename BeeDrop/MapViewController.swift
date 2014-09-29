@@ -151,6 +151,20 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         driverListView?.dataSource = self
     }
     
+    func finallyConfirmMF() {
+        UIView.animateWithDuration(0.5, delay: 0, options: .CurveLinear, animations: {
+            self.statusView!.alpha = 0
+            }, completion: {
+                finished in
+                self.statusView!.removeFromSuperview()
+                self.statusView = StatusView(status: .Done)
+                self.statusView!.delegate = self
+                UIApplication.sharedApplication().keyWindow.addSubview(self.statusView!)
+                self.statusView!.appear()
+        })
+        
+    }
+    
     func setupStatusView() {
         statusView = StatusView(status: .Pending)
         statusView?.delegate = self

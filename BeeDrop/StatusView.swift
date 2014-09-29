@@ -127,6 +127,7 @@ class StatusView: UIView {
             confirmButton!.alpha = 0
             confirmButton!.setBackgroundImage(UIImage(named: "confirm"), forState: UIControlState.Normal)
             confirmButton!.setBackgroundImage(UIImage(named: "confirmsel"), forState: UIControlState.Highlighted)
+            confirmButton!.addTarget(delegate!, action: Selector("finallyConfirmMF"), forControlEvents: .TouchUpInside)
             addSubview(confirmButton!)
             
             UIView.animateWithDuration(0.25, delay: 0.25, options: .CurveLinear, animations: {
