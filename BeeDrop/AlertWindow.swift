@@ -30,12 +30,11 @@ class AlertWindow : NSObject, UIAlertViewDelegate {
             alert.addButtonWithTitle("Accept")
             alert.delegate = self
             alert.show()
-            
+            sleep(2)
             let jsonObjectDriverConfirm: [String: AnyObject] = ["userID": self.mMatchedUserId]
             // Send request to server.
             var handeler = RequestHandler()
             handeler.sendRequestByURL(jsonObjectDriverConfirm, tag: "driverAcceptRequest")
-            sleep(5)
             println("sent out confirm to \(self.mMatchedUserId)")
 
         })
@@ -67,20 +66,14 @@ class AlertWindow : NSObject, UIAlertViewDelegate {
         mMatchedUserId = info["userID"]! as Int
         var mAttr: [String] = []
         for keyword in delKeyWords {
-            var str: String
+            //var str: String
             println(keyword)
-            /*
-            if (keyword == "payment") {
-                var money: Float = info[keyword] as AnyObject? as Float
-                println ("money: \(money)")
-                str = "\(money)"
+            if let str = (info[keyword]! as? String)? {
+                println(str)
+                mAttr.append(str)
             } else {
-                str = (info[keyword]! as? String)!
+                mAttr.append(" ")
             }
-            */
-            str = (info[keyword]! as? String)!
-            println(str)
-            mAttr.append(str)
         }
         var message = mAttr[0] + " wants you to deliver "  + mAttr[1] +  "!\n"
         message += "Payment amount is " + mAttr[2] + "\n"
@@ -103,13 +96,14 @@ class AlertWindow : NSObject, UIAlertViewDelegate {
         let jsonObject4: [String: AnyObject] = ["driverID": 53]
         
         var handeler = RequestHandler()
+        
         handeler.sendRequestByURL(driverObject1, tag: "addPerson")
         var info: [String: AnyObject] = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")!
         
         // Keep on polling user request
         while ( (info["status"] as AnyObject? as? Int) == -1) {
             info = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")!
-            sleep(2)
+            sleep(1)
         }
         return info
     }
