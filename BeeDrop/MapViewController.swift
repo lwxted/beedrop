@@ -233,7 +233,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             tName = "Kevin Chang"
         } else {
             tID = 21
-            if let n: String = NSUserDefaults.standardUserDefaults().objectForKey("USER_NAME") {
+            if let n: String = NSUserDefaults.standardUserDefaults().objectForKey("USER_NAME") as? String {
                 tName = n
             } else {
                 tName = "Michael Jackson"
