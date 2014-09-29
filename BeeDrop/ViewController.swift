@@ -186,6 +186,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
     
     func loginViewShowingLoggedInUser(loginView: FBLoginView!) {
         println("Logged in!")
+        if currentChoice == 0 {
+            NSUserDefaults.standardUserDefaults().setObject(false, forKey: "IS_DRIVER")
+        } else {
+            NSUserDefaults.standardUserDefaults().setObject(true, forKey: "IS_DRIVER")
+        }
         
         FBRequestConnection.startForMeWithCompletionHandler {
             (connection : FBRequestConnection!, fbUserData, error) -> Void in
