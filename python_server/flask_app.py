@@ -7,7 +7,8 @@ personDB = {} # Index by user ID
 transDB = {} # Index by trans ID
 locToUserDB = {} # Index by X coord
 
-distThreshold = 0.01 # degree
+#distThreshold = 0.01 # degree
+distThreshold = 1000 # degree
 
 class Person:
     def __init__(self, ID, curLoc, name, bUser):
@@ -59,7 +60,6 @@ def addUser():
     success = {"status": 0}
     return jsonify(**success)
 
-
 @app.route('/submitUserDeliveryForm', methods=['POST'])
 def submitForm():
     j_data = request.get_json()
@@ -86,6 +86,10 @@ def listDrivers():
     print j_data
     ID = j_data['ID']
     p_data = personDB[ID]
+    # Check if delivery exists
+    if p_data.devRequest == 0:
+        empty_list = {}
+        return jsonify(empty_list)
     p_dev_req_fLoc = p_data.devRequest.fromLoc
     driver_list = findMatchForRequest(p_dev_req_fLoc)
     print driver_list
@@ -99,7 +103,7 @@ def findMatchForRequest(fromLoc):
 
     print 'FindMatch using (%f, %f)' % (reqX, reqY)
     # A list of close by drivers within a square bounding box
-    allPotentialDrivers = {"status": 0}
+    allPotentialDrivers = {}
     for x_coord in locToUserDB:
         x_dist = abs(reqX-x_coord)
         if x_dist <= distThreshold:
@@ -131,6 +135,7 @@ def selectDriver():
 def pollUserRequest():
     j_data = request.get_json()
     print 'pollUserRequest:',
+    print 'remote IP address:' + str(request.remote_addr)
     print j_data
     driverID = j_data['driverID']
     ### BRUTE FORCE SEARCH ###
@@ -138,11 +143,13 @@ def pollUserRequest():
     # Go through all users to check isSentOutToDriver
     for uid in personDB:
         p_data = personDB[uid]
+        if p_data.devRequest == 0:
+            continue
         p_devReq = p_data.devRequest
         # Some users have no delivery requests
         if p_devReq == 0:
             continue
-        if p_devReq.driverID == driverID and p_devReq.isSentOutToDriver:
+        if p_devReq.driverID == driverID and p_devReq.isSentOutToDriver and not p_devReq.isAcceptedByDriver:
             response['status'] = 0
             response['userName'] = p_data.name
             response['userID'] = p_devReq.userID
@@ -176,6 +183,14 @@ def pollDriverAck():
     success = {"status": -1}
     if p_devReq.isAcceptedByDriver:
         success = {"status": 0}
+    return jsonify(**success)
+
+@app.route('/clearAllDatabase', methods=['POST'])
+def clearDB():
+    personDB = {}
+    transDB = {}
+    locToUserDB = {}
+    success = {"status": 0}
     return jsonify(**success)
 
 if __name__ == '__main__':
