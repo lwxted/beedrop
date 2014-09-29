@@ -83,6 +83,47 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         dispatch_async(dispatch_queue_create("poll", nil), {
             var info = alertWindow.driverAcceptDataHelper()
             //active listening
+            var coords = alertWindow.extractDeliverySrcDst(info)
+            
+            
+//            directionsRequest!.setSource(fromLocation)
+//            directionsRequest!.setDestination(toLocation)
+            self.directionsRequest = MKDirectionsRequest()
+            var sourceCoord = CLLocationCoordinate2DMake(coords[0], coords[1])
+            var destCoord = CLLocationCoordinate2DMake(coords[2], coords[3])
+            
+            var fLocation = MKMapItem(placemark: MKPlacemark(coordinate: sourceCoord, addressDictionary: nil))
+            var tLocation = MKMapItem(placemark: MKPlacemark(coordinate: destCoord, addressDictionary: nil))
+            
+            self.directionsRequest!.setSource(fLocation)
+            self.directionsRequest!.setDestination(tLocation)
+            var directions = MKDirections(request: self.directionsRequest!)
+            directions.calculateDirectionsWithCompletionHandler({
+                (response : MKDirectionsResponse!, error : NSError!) in
+                if response != nil && response.routes.count != 0 {
+                    self.route = response.routes.first as? MKRoute
+                    if let ol = self.overlay {
+                        self.mapView?.removeOverlay(ol)
+                    }
+                    self.overlay = self.route?.polyline
+                    self.mapView?.addOverlay(self.overlay)
+                }
+            })
+            
+            self.mapView?.removeAnnotations(self.placemarks)
+            self.placemarks.removeAll()
+            self.placemarks.append(fLocation.placemark)
+            self.placemarks.append(tLocation.placemark)
+            
+            self.mapView?.addAnnotations(self.placemarks)
+            
+            var delayInSeconds = 0.25
+            var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+            dispatch_after(popTime, dispatch_get_main_queue(), {
+                self.mapView!.showAnnotations(self.placemarks, animated: true)
+            })
+
+            
             alertWindow.showDriverAccept(info)
             //  alertWindow.showDriverAccept(info)
         })
