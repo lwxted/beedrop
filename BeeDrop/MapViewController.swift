@@ -64,7 +64,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     /** driveList related variables **/
     var driverListView : UITableView?
     let cellHeight : CGFloat = 44.0
-    var driverList : [(name: String, rating: Int, ID: Int)] = [("Only a test", 3, 55)]
+    var driverList : [(name: String, rating: Int, ID: Int)] = [("Searching nearby drivers...", 3, 55)]
     let driverListTableViewCellIdentifier = "driverListTableViewCell"
     var driverListFetchTerminate = false
     /** **/
@@ -455,9 +455,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     }
     
     func reloadDriverListView() {
+        println("driverList.count \(driverList.count)")
         driverListView!.frame = CGRectMake(
             driverListView!.frame.origin.x,
-            driverListView!.frame.origin.y,
+            SCREEN_HEIGHT - CGFloat(driverList.count) * cellHeight - 10,
             driverListView!.frame.size.width,
             (CGFloat(driverList.count)) * cellHeight + 10)
         driverListView!.reloadData()
@@ -474,11 +475,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         UIView.animateWithDuration(0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
             self.infoSheet!.transform = CGAffineTransformMakeTranslation(0, 0)
         }, completion: nil)
+
         
-        UIView.animateWithDuration(0.5, delay: 0.5, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
-            self.driverListView!.transform = CGAffineTransformMakeTranslation(0, -self.driverListView!.frame.size.height + 2)
-        }, completion: nil)
-//        
+        // Ted Animate
+        
+//        UIView.animateWithDuration(0.5, delay: 0.5, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+//            self.driverListView!.transform = CGAffineTransformMakeTranslation(0, -self.driverListView!.frame.size.height + 2)
+//        }, completion: nil)
+//
 //        var delayInSeconds = 1.0
 //        var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
@@ -589,7 +593,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                         
                         if let retStatusJson = retStatusJsonNil {
                             retStatus = retStatusJson["status"] as AnyObject? as Int
-                            
                             
                         }
                     }
