@@ -92,8 +92,13 @@ class AlertWindow : NSObject, UIAlertViewDelegate {
     }
     
     func driverAcceptDataHelper() -> [String: AnyObject] {
-        let driverObject1: [String: AnyObject] = ["bUser": false, "ID": 53, "name": "Philips", "curLoc": [0.30001, 0.0] ]
-        let jsonObject4: [String: AnyObject] = ["driverID": 53]
+        var driverName = ""
+        if let a: String = NSUserDefaults.standardUserDefaults().objectForKey("USER_NAME") as? String {
+            driverName = a
+        }
+        var driverId: Int = Int(arc4random_uniform(1000)) % 1000 + 1000
+        let driverObject1: [String: AnyObject] = ["bUser": false, "ID": driverId, "name": driverName, "curLoc": [0.30001, 0.0] ]
+        let jsonObject4: [String: AnyObject] = ["driverID": driverId]
         
         var handeler = RequestHandler()
         

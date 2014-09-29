@@ -233,7 +233,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             tName = "Kevin Chang"
         } else {
             tID = 21
-            tName = "Michael Jackson"
+            if let n: String = NSUserDefaults.standardUserDefaults().objectForKey("USER_NAME") {
+                tName = n
+            } else {
+                tName = "Michael Jackson"
+            }
         }
         loginJson["ID"] = tID
         loginJson["name"] = tName
@@ -253,7 +257,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         setupCoreLocation()
         setupMapView()
-        setupSearchbarView()
+        
+        if !isDriver {
+            setupSearchbarView()
+        }
+        
         setupToolbar()
         setupStatusView()
         setupDriverListView()
@@ -659,10 +667,13 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
                         }
                     }
                     
-                    dispatch_async(dispatch_get_main_queue(), {
+                    var delayInSeconds = 3.0
+                    var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
+                    dispatch_after(popTime, dispatch_get_main_queue(), {
                         self.statusView!.status = .Delivering
                         self.statusView!.updateStatus()
                     })
+                    
                 })
 
                 
