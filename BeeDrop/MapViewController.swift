@@ -161,18 +161,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
 //            self.statusView!.appear()
 //        })
-//
+
 //        delayInSeconds = 3.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
-//            self.statusView!.status = .Done
+//            self.statusView!.status = .Delivering
 //            self.statusView!.updateStatus()
 //        })
-//        
+//
 //        delayInSeconds = 5.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
-//            self.statusView!.status = .Pending
+//            self.statusView!.status = .Done
 //            self.statusView!.updateStatus()
 //        })
     }
@@ -184,7 +184,11 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         loginJson["bUser"] = true
         loginJson["ID"] = 21
-        loginJson["name"] = "Michael Jordan"
+        if let name : String = NSUserDefaults.standardUserDefaults().objectForKey("USER_NAME") as? String {
+            loginJson["name"] = name
+        } else {
+            loginJson["name"] = "Michael Jordan"
+        }
         var lat = 0.0
         var long = 0.0
         if let cl = currentLocation {
@@ -379,6 +383,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         userName = UITextField(frame: CGRectMake(114, 74, 200, 20))
         userName?.textAlignment = .Left
         userName?.placeholder = "Andrew Carnegie"
+        if let a: String = NSUserDefaults.standardUserDefaults().objectForKey("USER_NAME") as? String {
+            userName?.text = a
+        }
         userName?.textColor = UIColor.blackColor()
         userName?.font = UIFont.systemFontOfSize(13)
         userName?.delegate = self

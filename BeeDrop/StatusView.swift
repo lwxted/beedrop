@@ -33,6 +33,12 @@ class StatusView: UIView {
     
     var delegate : MapViewController?
     
+    
+    var contactButton : UIButton?
+    var confirmButton : UIButton?
+    var rateButton : UIButton?
+    var shareButton : UIButton?
+    
     func DEGREES_TO_RADIANS(x : CGFloat) -> CGFloat { return CGFloat(3.14159265 / 180.0) * x }
     
     init(status : StatusType) {
@@ -43,13 +49,13 @@ class StatusView: UIView {
     override func layoutSubviews() {
         mImgView = UIImageView(frame: CGRectMake(22, 22, 44, 44))
         
-        titleLabel = LTMorphingLabel(frame: CGRectMake(90, 18, 225, 30))
+        titleLabel = LTMorphingLabel(frame: CGRectMake(85, 18, 225, 30))
         titleLabel?.textAlignment = .Left
         titleLabel?.textColor = UIColor.whiteColor()
         titleLabel?.font = UIFont(name: "HelveticaNeue-Light", size: 25)
         titleLabel?.morphingEffect = .Fall
         
-        detailLabel = UILabel(frame: CGRectMake(90, 44, 225, 30))
+        detailLabel = UILabel(frame: CGRectMake(85, 44, 225, 30))
         detailLabel?.textAlignment = .Left
         detailLabel?.textColor = UIColor.whiteColor()
         detailLabel?.font = UIFont(name: "HelveticaNeue", size: 13)
@@ -111,16 +117,32 @@ class StatusView: UIView {
             pointerImageView?.image = nil
             mImgView!.addSubview(pointerImageView!)
             
+            contactButton = UIButton(frame: CGRectMake(85, 45, 104, 36))
+            contactButton!.alpha = 0
+            contactButton!.setBackgroundImage(UIImage(named: "contactdriver"), forState: UIControlState.Normal)
+            contactButton!.setBackgroundImage(UIImage(named: "contactdriversel"), forState: UIControlState.Highlighted)
+            addSubview(contactButton!)
+            
+            confirmButton = UIButton(frame: CGRectMake(200, 45, 117, 36))
+            confirmButton!.alpha = 0
+            confirmButton!.setBackgroundImage(UIImage(named: "confirm"), forState: UIControlState.Normal)
+            confirmButton!.setBackgroundImage(UIImage(named: "confirmsel"), forState: UIControlState.Highlighted)
+            addSubview(confirmButton!)
+            
             UIView.animateWithDuration(0.25, delay: 0.25, options: .CurveLinear, animations: {
                 self.mImgView!.alpha = 1
+                self.confirmButton!.alpha = 1
+                self.contactButton!.alpha = 1
             }, completion: nil)
             
             UIView.animateWithDuration(0.5, delay: 0, options: .CurveLinear, animations: {
                 self.layer.backgroundColor = self.DELIVERING_COLOR.CGColor
+                self.titleLabel!.frame = CGRectMake(self.titleLabel!.frame.origin.x, self.titleLabel!.frame.origin.y - 8, self.titleLabel!.frame.width, self.titleLabel!.frame.height)
             }, completion: nil)
             
+            
             titleLabel?.text = "On its way!"
-            detailLabel?.text = "Your item is on its way!"
+            detailLabel?.text = ""
         
         case .Done:
             if let imgView = mImgView {
@@ -139,16 +161,37 @@ class StatusView: UIView {
             pointerImageView?.image = UIImage(named: "tick")
             mImgView!.addSubview(pointerImageView!)
             
+            self.contactButton?.removeFromSuperview()
+            self.confirmButton?.removeFromSuperview()
+            
             UIView.animateWithDuration(0.5, delay: 0, options: .CurveLinear, animations: {
                 self.layer.backgroundColor = self.DONE_COLOR.CGColor
                 }, completion: nil)
             
+            rateButton = UIButton(frame: CGRectMake(85, 45, 86, 36))
+            rateButton!.alpha = 0
+            rateButton!.setBackgroundImage(UIImage(named: "rate"), forState: UIControlState.Normal)
+            rateButton!.setBackgroundImage(UIImage(named: "ratesel"), forState: UIControlState.Highlighted)
+            addSubview(rateButton!)
+            
+            shareButton = UIButton(frame: CGRectMake(181, 45, 103, 36))
+            shareButton!.alpha = 0
+            shareButton!.setBackgroundImage(UIImage(named: "share"), forState: UIControlState.Normal)
+            shareButton!.setBackgroundImage(UIImage(named: "sharesel"), forState: UIControlState.Highlighted)
+            addSubview(shareButton!)
+            
             UIView.animateWithDuration(0.25, delay: 0.25, options: .CurveLinear, animations: {
                 self.mImgView!.alpha = 1
+                self.rateButton!.alpha = 1
+                self.shareButton!.alpha = 1
             }, completion: nil)
             
+            self.titleLabel!.transform = CGAffineTransformMakeTranslation(0, -8)
+            
+//            titleLabel!.frame = CGRectMake(self.titleLabel!.frame.origin.x, self.titleLabel!.frame.origin.y - 8, self.titleLabel!.frame.width, self.titleLabel!.frame.height)
+            
             titleLabel?.text = "Delivered"
-            detailLabel?.text = "Your item has been delivered."
+            detailLabel?.text = ""
         }
     }
     
