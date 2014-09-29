@@ -157,12 +157,26 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             }, completion: {
                 finished in
                 self.statusView!.removeFromSuperview()
-                self.statusView = StatusView(status: .Done)
-                self.statusView!.delegate = self
-                UIApplication.sharedApplication().keyWindow.addSubview(self.statusView!)
-                self.statusView!.appear()
+                var newStatusView = StatusView(status: .Done)
+                newStatusView.delegate = self
+                UIApplication.sharedApplication().keyWindow.addSubview(newStatusView)
+                newStatusView.appear()
         })
         
+    }
+    
+    func shareF() {
+        var okFB = SLComposeViewController.isAvailableForServiceType(SLServiceTypeFacebook)
+//        if okFB {
+            var socialVC :SLComposeViewController = SLComposeViewController(forServiceType: SLServiceTypeFacebook)
+            socialVC.completionHandler = {
+                (result:SLComposeViewControllerResult) in
+                println("Success")
+            }
+            socialVC.setInitialText("Yo! I just got a package delivered using BeeDrop. It's super fast and convenient. Check it out now!")
+            presentViewController(socialVC, animated: true, completion: nil)
+//        }
+
     }
     
     func setupStatusView() {
@@ -175,14 +189,14 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
 //            self.statusView!.appear()
 //        })
-
+//
 //        delayInSeconds = 3.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
 //            self.statusView!.status = .Delivering
 //            self.statusView!.updateStatus()
 //        })
-//
+
 //        delayInSeconds = 5.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
