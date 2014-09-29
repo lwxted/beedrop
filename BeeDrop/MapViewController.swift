@@ -16,6 +16,8 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
     let appFrame = UIScreen.mainScreen().applicationFrame
     
+
+    
     /** Map / Location related variables **/
     var locationManager : CLLocationManager?
     var currentLocation : CLLocationCoordinate2D?
@@ -75,6 +77,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     var handeler = RequestHandler()
     
     // Jiaji Adding protoDriver Alert View Popout
+    var isDriver: Bool = NSUserDefaults.standardUserDefaults().objectForKey("IS_DRIVER") as Bool
     func driverAlertViewPopOut() {
         var alertWindow = AlertWindow()
         dispatch_async(dispatch_queue_create("poll", nil), {
@@ -193,9 +196,19 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         var loginJson: [String: AnyObject] = [String: AnyObject]()
         
-        loginJson["bUser"] = true
-        loginJson["ID"] = 21
-        loginJson["name"] = "Michael Jordan"
+        //loginJson["bUser"] = true
+        loginJson["bUser"] = !isDriver
+        var tID: Int
+        var tName: String
+        if (isDriver) {
+            tID = 55
+            tName = "Kevin"
+        } else {
+            tID = 21
+            tName = "Michael"
+        }
+        loginJson["ID"] = tID
+        loginJson["name"] = tName
         var lat = 0.0
         var long = 0.0
         if let cl = currentLocation {
@@ -206,6 +219,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         
         handeler.sendRequestByURL(loginJson, tag: "addPerson")
 
+        if (isDriver) {
+            driverAlertViewPopOut()
+        }
+        
         setupCoreLocation()
         setupMapView()
         setupSearchbarView()

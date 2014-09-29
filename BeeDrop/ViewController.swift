@@ -185,6 +185,11 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
     
     func loginViewShowingLoggedInUser(loginView: FBLoginView!) {
         println("Logged in!")
+        if currentChoice == 0 {
+            NSUserDefaults.standardUserDefaults().setObject(false, forKey: "IS_DRIVER")
+        } else {
+            NSUserDefaults.standardUserDefaults().setObject(true, forKey: "IS_DRIVER")
+        }
         var delayInSeconds = 0.5
         var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue(), {
