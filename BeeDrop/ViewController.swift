@@ -14,7 +14,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
     let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
     
     var currentChoice = 0
-    let choices = ["Get stuff delivered", "Help deliver stuff"]
+    let choices = ["Request Delivery", "Help Deliver"]
     
     var backgroundImageBlurView : UIView?
     var backgroundImageView : UIImageView?
@@ -129,6 +129,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
         FBSettings.setDefaultAppID("304421096410772")
         fbLoginView = FBLoginView()
         fbLoginView!.delegate = self
+        fbLoginView!.readPermissions = ["public_profile"]
         fbLoginView!.center = CGPointMake(SCREEN_WIDTH / 2, 400)
         fbLoginView!.alpha = 0
         view.addSubview(fbLoginView!)
@@ -185,15 +186,30 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
     
     func loginViewShowingLoggedInUser(loginView: FBLoginView!) {
         println("Logged in!")
+        if currentChoice == 0 {
+            if NSUserDefaults.standardUserDefaults().objectForKey("IS_DRIVER") == nil {
+                NSUserDefaults.standardUserDefaults().setObject(false, forKey: "IS_DRIVER")
+            }
+        } else {
+            if NSUserDefaults.standardUserDefaults().objectForKey("IS_DRIVER") == nil {
+                NSUserDefaults.standardUserDefaults().setObject(true, forKey: "IS_DRIVER")
+            }
+        }
+        
+        FBRequestConnection.startForMeWithCompletionHandler {
+            (connection : FBRequestConnection!, fbUserData, error) -> Void in
+            var firstName = fbUserData.first_name
+            var lastName = fbUserData.last_name
+//            var userID = fbUserData.ID
+            NSUserDefaults.standardUserDefaults().setObject(firstName + " " + lastName, forKey: "USER_NAME")
+//            NSUserDefaults.standardUserDefaults().setObject(userID, forKey: "USER_ID")
+        }
+        
         var delayInSeconds = 0.5
         var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue(), {
             self.performSegueWithIdentifier("facebookLoggedIn", sender: self)
         });
-        
-        let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Bob", "curLoc": [0.3, 0.0] ]
-        
-        handeler.sendRequestByURL(jsonObject, tag: "addPerson")
     }
 }
 

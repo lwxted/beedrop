@@ -5,3 +5,5 @@
 #import "FBShimmeringView.h"
 #import "FBShimmeringLayer.h"
 #import <FacebookSDK/FacebookSDK.h>
+#import <Accounts/Accounts.h>
+#import <Social/Social.h>
