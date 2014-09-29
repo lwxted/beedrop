@@ -74,6 +74,17 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
     // Hongyi adding handler
     var handeler = RequestHandler()
     
+    // Jiaji Adding protoDriver Alert View Popout
+    func driverAlertViewPopOut() {
+        var alertWindow = AlertWindow()
+        dispatch_async(dispatch_queue_create("poll", nil), {
+            var info = alertWindow.driverAcceptDataHelper()
+            //active listening
+            alertWindow.showDriverAccept(info)
+            //  alertWindow.showDriverAccept(info)
+        })
+    }
+    
     // MARK: View setups
     
     func setupMapView() {
