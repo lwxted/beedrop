@@ -482,7 +482,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             SCREEN_HEIGHT - CGFloat(driverList.count) * cellHeight - 10,
             driverListView!.frame.size.width,
             (CGFloat(driverList.count)) * cellHeight + 10)
-        driverListView!.reloadData()
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            self.driverListView!.reloadData()
+        })
     }
     
     func tappedCheckButton() {
