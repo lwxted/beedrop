@@ -14,7 +14,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
     let SCREEN_HEIGHT = UIScreen.mainScreen().bounds.size.height
     
     var currentChoice = 0
-    let choices = ["Get stuff delivered", "Help deliver stuff"]
+    let choices = ["Request Delivery", "Help Deliver"]
     
     var backgroundImageBlurView : UIView?
     var backgroundImageView : UIImageView?

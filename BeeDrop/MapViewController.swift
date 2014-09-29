@@ -271,7 +271,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         var tName: String
         if (isDriver) {
             tID = 55
-            tName = "Kevin Chang"
+            tName = "Taylor Johnson"
         } else {
             tID = 21
             if let n: String = NSUserDefaults.standardUserDefaults().objectForKey("USER_NAME") as? String {
