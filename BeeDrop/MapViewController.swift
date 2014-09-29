@@ -165,6 +165,20 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         driverListView?.dataSource = self
     }
     
+    func finallyConfirmMF() {
+        UIView.animateWithDuration(0.5, delay: 0, options: .CurveLinear, animations: {
+            self.statusView!.alpha = 0
+            }, completion: {
+                finished in
+                self.statusView!.removeFromSuperview()
+                self.statusView = StatusView(status: .Done)
+                self.statusView!.delegate = self
+                UIApplication.sharedApplication().keyWindow.addSubview(self.statusView!)
+                self.statusView!.appear()
+        })
+        
+    }
+    
     func setupStatusView() {
         statusView = StatusView(status: .Pending)
         statusView?.delegate = self
@@ -175,18 +189,18 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
 //            self.statusView!.appear()
 //        })
-//
+
 //        delayInSeconds = 3.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
-//            self.statusView!.status = .Done
+//            self.statusView!.status = .Delivering
 //            self.statusView!.updateStatus()
 //        })
-//        
+//
 //        delayInSeconds = 5.0
 //        popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
 //        dispatch_after(popTime, dispatch_get_main_queue(), {
-//            self.statusView!.status = .Pending
+//            self.statusView!.status = .Done
 //            self.statusView!.updateStatus()
 //        })
     }
@@ -202,10 +216,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         var tName: String
         if (isDriver) {
             tID = 55
-            tName = "Kevin"
+            tName = "Kevin Chang"
         } else {
             tID = 21
-            tName = "Michael"
+            tName = "Michael Jackson"
         }
         loginJson["ID"] = tID
         loginJson["name"] = tName
@@ -407,6 +421,9 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         userName = UITextField(frame: CGRectMake(114, 74, 200, 20))
         userName?.textAlignment = .Left
         userName?.placeholder = "Andrew Carnegie"
+        if let a: String = NSUserDefaults.standardUserDefaults().objectForKey("USER_NAME") as? String {
+            userName?.text = a
+        }
         userName?.textColor = UIColor.blackColor()
         userName?.font = UIFont.systemFontOfSize(13)
         userName?.delegate = self
@@ -489,7 +506,10 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
             SCREEN_HEIGHT - CGFloat(driverList.count) * cellHeight - 10,
             driverListView!.frame.size.width,
             (CGFloat(driverList.count)) * cellHeight + 10)
-        driverListView!.reloadData()
+        
+        dispatch_async(dispatch_get_main_queue(), {
+            self.driverListView!.reloadData()
+        })
     }
     
     func tappedCheckButton() {
