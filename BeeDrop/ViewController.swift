@@ -129,6 +129,7 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
         FBSettings.setDefaultAppID("304421096410772")
         fbLoginView = FBLoginView()
         fbLoginView!.delegate = self
+        fbLoginView!.readPermissions = ["public_profile"]
         fbLoginView!.center = CGPointMake(SCREEN_WIDTH / 2, 400)
         fbLoginView!.alpha = 0
         view.addSubview(fbLoginView!)
@@ -185,6 +186,16 @@ class ViewController: UIViewController, UIGestureRecognizerDelegate, FBLoginView
     
     func loginViewShowingLoggedInUser(loginView: FBLoginView!) {
         println("Logged in!")
+        
+        FBRequestConnection.startForMeWithCompletionHandler {
+            (connection : FBRequestConnection!, fbUserData, error) -> Void in
+            var firstName = fbUserData.first_name
+            var lastName = fbUserData.last_name
+//            var userID = fbUserData.ID
+            NSUserDefaults.standardUserDefaults().setObject(firstName + " " + lastName, forKey: "USER_NAME")
+//            NSUserDefaults.standardUserDefaults().setObject(userID, forKey: "USER_ID")
+        }
+        
         var delayInSeconds = 0.5
         var popTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delayInSeconds * Double(NSEC_PER_SEC)))
         dispatch_after(popTime, dispatch_get_main_queue(), {

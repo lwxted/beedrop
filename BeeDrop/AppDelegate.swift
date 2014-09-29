@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            var info = alertWindow.driverAcceptDataHelper()
 //            alertWindow.showDriverAccept(info)
       //  })
-       /*
+        
         //Hongyi tryout here
                 
         let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Bob", "curLoc": [0.3, 0.0] ]
@@ -67,7 +67,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        println("Printing Json object")
 //        println(returnedJson)
         
-        */
         
         //=================================================================================//
         
