@@ -9,23 +9,62 @@
 import Foundation
 import UIKit
 
-class AlertWindow {
+class AlertWindow : NSObject, UIAlertViewDelegate {
     var delKeyWords: [String] =
         ["userName", "requestProduct", "payment", "passcode"]
-    init() {}
+    var mDriverId: Int
+    var mMatchedUserId: Int
+    
+    override init() {
+        mDriverId = -1
+        mMatchedUserId = -1
+        super.init()
+    }
     
     // Given the delivery info, display delivery info to driver
     func showDriverAccept(info: [String: AnyObject]) {
-        let alert = UIAlertView()
-        alert.title = "Delivery Request"
-        alert.message = formDeliveryInfoMessage(info)
-        alert.addButtonWithTitle("Accept")
-        alert.show()
+        dispatch_async(dispatch_get_main_queue(), {
+            let alert = UIAlertView()
+            alert.title = "Delivery Request"
+            alert.message = self.formDeliveryInfoMessage(info)
+            alert.addButtonWithTitle("Accept")
+            alert.delegate = self
+            alert.show()
+            
+            let jsonObjectDriverConfirm: [String: AnyObject] = ["userID": self.mMatchedUserId]
+            // Send request to server.
+            var handeler = RequestHandler()
+            handeler.sendRequestByURL(jsonObjectDriverConfirm, tag: "driverAcceptRequest")
+            sleep(5.0)
+            println("sent out confirm to \(self.mMatchedUserId)")
+
+        })
     }
-    
 
     
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        println("button clicked")
+        switch buttonIndex {
+        case 0:
+            // Form jsonObject Containing the UserId in delivery order.
+            let jsonObjectDriverConfirm: [String: AnyObject] = ["userID": mMatchedUserId]
+            // Send request to server.
+            var handeler = RequestHandler()
+            handeler.sendRequestByURL(jsonObjectDriverConfirm, tag: "driverAcceptRequest")
+            println("sent out confirm to \(mMatchedUserId)")
+            break
+        default:
+            println("clicked Nothing")
+        }
+    }
+    
+    func setDriverId(driverId: Int) {
+        mDriverId = driverId
+    }
+    
     func formDeliveryInfoMessage(info: [String: AnyObject]) -> String {
+        // Extract delivery user Id.
+        mMatchedUserId = info["userID"]! as Int
         var mAttr: [String] = []
         for keyword in delKeyWords {
             var str: String
@@ -38,11 +77,16 @@ class AlertWindow {
             }
             */
             println(keyword)
+            /*
             if (keyword == "payment") {
-                str = "\(info[keyword]! as Double)"
+                var money: Float = info[keyword] as AnyObject? as Float
+                println ("money: \(money)")
+                str = "\(money)"
             } else {
                 str = (info[keyword]! as? String)!
             }
+            */
+            str = (info[keyword]! as? String)!
             println(str)
             mAttr.append(str)
         }
@@ -63,7 +107,7 @@ class AlertWindow {
     }
     
     func driverAcceptDataHelper() -> [String: AnyObject] {
-        var info : [String: AnyObject]? = [String: AnyObject]()
+      //  var info : [String: AnyObject] = [String: AnyObject]()
         
         let jsonObject: [String: AnyObject] = ["bUser": true, "ID": 21, "name": "Ted", "curLoc": [0.3, 0.0] ]
         let driverObject: [String: AnyObject] = ["bUser": false, "ID": 52, "name": "Mike", "curLoc": [0.3, 0.0] ]
@@ -76,8 +120,8 @@ class AlertWindow {
         
         var handeler = RequestHandler()
         //clear database.
-        handeler.sendRequestByURL(jsonObject, tag: "clearAllDataBase")
-
+       // handeler.sendRequestByURL(jsonObject, tag: "clearAllDataBase")
+        /*
         handeler.sendRequestByURL(jsonObject, tag: "addPerson")
         handeler.sendRequestByURL(driverObject, tag: "addPerson")
         handeler.sendRequestByURL(driverObject1, tag: "addPerson")
@@ -86,7 +130,14 @@ class AlertWindow {
         handeler.sendRequestByURL(jsonObject3, tag: "selectDriver")
         info = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")
         println(info)
-        return info!
+        */
+        handeler.sendRequestByURL(driverObject1, tag: "addPerson")
+        var info: [String: AnyObject] = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")!
+        while ( (info["status"] as AnyObject? as? Int) == -1) {
+            info = handeler.sendRequestByURL(jsonObject4, tag: "pollUserRequest")!
+            sleep(2)
+        }
+        return info
     }
     
 }
